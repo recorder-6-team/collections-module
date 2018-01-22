@@ -1,0 +1,8 @@
+<TR>
+	<TD><#RefNo></TD>
+	<TD><#LoanedTo></TD>
+	<TD><#StaffResp></TD>
+	<TD><#Department></TD>
+	<TD><#Dates></TD>
+	<TD><#Status></TD>
+</TR>

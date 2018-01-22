@@ -1,0 +1,13 @@
+<TABLE WIDTH="100%" CELLSPACING="0">
+<COL WIDTH = "30%">
+<COL WIDTH = "20%">
+<COL WIDTH = "20%">
+<COL WIDTH = "20%">
+<COL WIDTH = "*">
+<TR>
+	<TD class="bold">Applies To</TD>
+	<TD class="bold">Parameter</TD>
+	<TD class="bold">Value</TD>
+	<TD class="bold">Method</TD>
+	<TD class="bold">Accuracy</TD>
+</TR>

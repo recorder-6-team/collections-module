@@ -1,0 +1,26 @@
+﻿*.$$$
+*.bpl
+*.~bpl
+*.dpl
+*.dcp
+*.dcu
+*.dcp
+*.~dpk
+*.dsk
+*.~dsk
+*.map
+*.rsm
+*.~pas
+*.drc
+*.~dfm
+*.~bpg
+*.scc
+*.~dpr
+*.~tlb
+*.ddp
+\Collections Module\Output
+*.dcr
+*.~ddp
+!*.res
+\Install Kit\Client Setup\Manifest.res
+*.~inc

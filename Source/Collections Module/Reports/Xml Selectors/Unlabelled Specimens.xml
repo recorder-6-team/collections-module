@@ -1,0 +1,7 @@
+<selector caption="Unlabelled specimens">
+SELECT SU.Collection_Unit_Key
+FROM Specimen_Unit SU
+LEFT JOIN Specimen_Label SL ON SU.Collection_Unit_Key = SL.Collection_Unit_Key
+WHERE SU.Collection_Unit_Key IN (%s)
+AND SU.Collection_Unit_Key NOT IN (SELECT Collection_Unit_Key FROM Specimen_Label WHERE Is_Current = 1)
+</selector>

@@ -1,0 +1,17 @@
+<TABLE WIDTH="100%" CELLSPACING="0">
+<COL WIDTH = "15%">
+<COL WIDTH = "25%">
+<COL WIDTH = "10%">
+<COL WIDTH = "15%">
+<COL WIDTH = "15%">
+<COL WIDTH = "10%">
+<COL WIDTH = "*">
+<TR>
+	<TD class="bold">Pref No</TD>
+	<TD class="bold">Determination</TD>
+	<TD class="bold">Type</TD>
+	<TD class="bold">Field Collector</TD>
+	<TD class="bold">Gathering Site</TD>
+	<TD class="bold">Gathering Date</TD>
+	<TD class="bold">Store</TD>
+</TR>

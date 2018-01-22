@@ -1,0 +1,9 @@
+<selector caption="Unchecked specimens">
+SELECT SU.Collection_Unit_Key
+FROM Specimen_Unit SU
+INNER JOIN Specimen_Field_Data SFD ON SFD.Collection_Unit_Key= SU.Collection_Unit_Key
+LEFT JOIN Occurrence O ON O.Occurrence_Key=SFD.Occurrence_Key
+LEFT JOIN Taxon_Occurrence XO ON XO.Taxon_Occurrence_Key=SFD.Taxon_Occurrence_Key
+WHERE SU.Collection_Unit_Key IN (%s)
+AND O.Checked != 1 OR XO.Checked != 1
+</selector>

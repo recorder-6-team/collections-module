@@ -1,0 +1,10 @@
+<TABLE WIDTH="100%" CELLSPACING="0">
+<COL>
+<COL>
+<COL>
+<COL>
+<COL>
+<TR>
+	<TD class="bold" width="*">Material</TD>
+	<TD class="bold" width="20%">Quantity</TD>
+</TR>

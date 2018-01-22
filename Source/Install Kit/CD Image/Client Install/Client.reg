@@ -1,0 +1,26 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Dorset Software\Recorder 6\Installed Addins\CollectionsModuleManager.Collections Module Addin]
+"ClsID"="{3739181F-25A2-4605-8835-80C423BABA71}"
+"Installed"="1"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Dorset Software\Recorder 6\Installed Addins\Occurrences.DescriptorsTab]
+"ClsID"="{3A308973-7F2A-42CD-847F-E477B7CB350B}"
+"Installed"="1"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Dorset Software\Recorder 6\Installed Addins\Occurrences.Locations]
+"ClsID"="{3993345D-ADF9-411A-A331-FCEE45F3E0FB}"
+"Installed"="1"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Dorset Software\Recorder 6\Installed Addins\Occurrences.Occurrences]
+"ClsID"="{4C975253-5FCF-411B-830B-EE2ECCDDF406}"
+"Installed"="1"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Dorset Software\Recorder 6\Installed Addins\Occurrences.SpecimenTab]
+"ClsID"="{EAF2C7CD-FD14-4599-B697-7FBD306C5209}"
+"Installed"="1"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Dorset Software]
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Dorset Software\Collections Module]
+"Standard Report Template Path"="%s"

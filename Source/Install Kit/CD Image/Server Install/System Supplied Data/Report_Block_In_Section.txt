@@ -1,0 +1,615 @@
+SYSTEM0000000000*@*@SYSTEM0000000012*@*@SYSTEM0000000000*@*@-- Set of options for better use of vw_ConceptTerm.
+SET NOCOUNT ON
+SET ANSI_NULLS ON
+SET ANSI_PADDING ON
+SET ANSI_WARNINGS ON
+SET ARITHABORT ON
+SET CONCAT_NULL_YIELDS_NULL ON
+SET QUOTED_IDENTIFIER ON
+SET NO_BROWSETABLE OFF
+
+DECLARE @Status VARCHAR(50)
+DECLARE @SurveyOrganiser VARCHAR(100)
+DECLARE @GeographicInfo VARCHAR(8000)
+DECLARE @Department VARCHAR(100)
+DECLARE @Key CHAR(16)
+DECLARE @ShowCommonNames BIT
+
+SET @Key = '<#ReportKey>'
+SET @ShowCommonNames = <#ShowCommonNames>
+
+--Find Nomanclature status
+EXEC usp_CollectionUnitDepartment_Get @Key, @Department OUTPUT
+
+--Find specimen status
+EXEC usp_CollectionUnitStatus_Get @Key, @Status OUTPUT
+
+--Find Geographic Info
+SELECT @GeographicInfo = M.[Text]
+FROM
+	Metadata M 
+	INNER JOIN
+		Metadata_Type MT
+	ON M.Metadata_Type_Key = MT.Metadata_Type_Key
+		AND M.Metadata_Type_Key = 'SYSTEM0000000005' --Geo Info for Specimen
+		AND MT.Table_Name = 'Specimen'
+
+--Find Survey Organiser
+SELECT @SurveyOrganiser = dbo.ufn_GetFormattedName(SY.Run_By)
+FROM
+	SPECIMEN_UNIT SU
+	INNER JOIN
+		SPECIMEN_FIELD_DATA SFD
+	ON SU.Collection_Unit_Key = SFD.Collection_Unit_Key
+		AND SFD.Gathering_Event = 1
+	LEFT JOIN 
+		COLLECTION_UNIT_NUMBER CUN
+	ON SU.Collection_Unit_key = CUN.Collection_Unit_Key 
+	LEFT JOIN 
+		OCCURRENCE O
+	ON SFD.Occurrence_Key = O.Occurrence_Key
+	LEFT JOIN
+		TAXON_OCCURRENCE XO
+	ON SFD.Taxon_Occurrence_Key = XO.Taxon_Occurrence_Key
+	INNER JOIN
+		SAMPLE SA
+	ON (O.Sample_Key = SA.Sample_Key) OR (XO.Sample_Key = SA.Sample_Key)
+	INNER JOIN
+		Survey_Event SE
+	ON SA.Survey_Event_Key = SE.Survey_Event_Key
+	INNER JOIN
+		Survey SY
+	ON SE.Survey_Key = SY.Survey_Key
+
+--Find all other required information
+SELECT DISTINCT
+	CASE WHEN SU.Life_Sciences = 0 THEN 
+		ISNULL(dbo.ufn_ConceptItemName_Get(D.Concept_Key, @ShowCommonNames, 0, 1), 'No Determination') 
+	ELSE
+		ISNULL(dbo.ufn_GetFormattedTaxonNameByParams(ITN.Actual_Name, ITN.Actual_Name_Italic, ITN.Common_Name, 
+					ITN.Common_Name_Italic, ITN.Authority, @ShowCommonNames), 'No Determination') 
+	END AS Determination,
+	CASE WHEN CTN1.PlainText IS NULL THEN CTN2.PlainText
+		ELSE CTN1.PlainText
+	END AS NomenclatureStatus,
+	CUN.Number AS RegNumber,
+	M.Number AS AccNumber,
+	CTType.PlainText AS Type,
+	@GeographicInfo AS GeographicInfo,
+	@Status AS Status,
+	dbo.ufn_GetFormattedName(CUName.Name_Key) AS Owner,
+	ISNULL(C.Item_Name + ' - ' + CM.Number, C.Item_Name) AS CollectionName,
+	@Department AS Department,
+	ISNULL(S.Item_Name + ' - ' + SCUN.Number, S.Item_Name) AS StoreName,
+	@SurveyOrganiser AS SurveyOrganiser,
+	CU.Current_Location_Code AS StoreCode
+FROM				
+	SPECIMEN_UNIT AS SU
+	INNER JOIN
+		Collection_Unit CU
+	ON SU.Collection_Unit_Key = CU.Collection_Unit_Key
+		AND SU.Collection_Unit_Key = @Key
+	INNER JOIN 	
+		VW_ConceptTerm AS CTType ON 
+	SU.Specimen_Type_Concept_Key = CTType.Concept_Key
+
+	LEFT JOIN
+		Collection_Unit_Name CUName 
+	ON SU.Collection_Unit_Key = CUName.Collection_Unit_Key
+		AND CUName.Relation_Type_Concept_Key = 'SYSTEM00000000I7' --Owner
+
+	LEFT JOIN
+		Store S
+	ON CU.Current_Container_Collection_Unit_Key = S.Collection_Unit_Key
+	LEFT JOIN
+		Collection_Unit_Number AS SCUN
+	ON S.Collection_Unit_Key = SCUN.Collection_Unit_Key
+		AND SCUN.Type_Concept_Key = 'SYSTEM0000000001' -- Registration Number
+		AND SCUN.Preferred = 1
+
+	LEFT JOIN	
+		Collection C 
+	ON SU.Parent_Collection_Collection_Unit_Key = C.Collection_Unit_Key
+	LEFT JOIN
+		(MOVEMENT_COLLECTION_UNIT CMCU
+		INNER JOIN
+			MOVEMENT_DIRECTION CMD
+		ON CMCU.Movement_Direction_Key = CMD.Movement_Direction_Key 
+			AND (CMD.Outbound = 0)
+		INNER JOIN
+			MOVEMENT CM
+		ON CMD.Movement_Key = CM.Movement_Key AND (CM.Movement_Type = 0 OR CM.Movement_Type = 1))
+	ON C.Collection_Unit_Key = CMCU.Collection_Unit_Key
+
+	LEFT JOIN 
+		Collection_Unit_Number CUN 
+	ON SU.Collection_Unit_key = CUN.Collection_Unit_Key
+		AND CUN.Preferred = 1 
+		AND CUN.Type_Concept_Key = 'SYSTEM0000000001'
+
+	LEFT JOIN 
+		Determination D 
+	ON D.Determination_Key = SU.Preferred_Determination_Key
+
+	LEFT JOIN 
+		VW_ConceptTermPreferred CTN1
+	ON D.Nomenclatural_Status_Concept_Key = CTN1.Concept_Key
+
+	LEFT JOIN 
+		Taxon_Determination TD 
+	ON SU.Preferred_Taxon_Determination_Key = TD.Taxon_Determination_Key
+	LEFT JOIN 
+		Index_Taxon_Name ITN 
+	ON ITN.Taxon_List_Item_Key = TD.Taxon_List_Item_Key
+	LEFT JOIN 
+		VW_ConceptTermPreferred CTN2
+	ON TD.Nomenclatural_Status_Concept_Key = CTN2.Concept_Key
+
+	LEFT JOIN
+		(MOVEMENT_COLLECTION_UNIT MCU
+		INNER JOIN
+			MOVEMENT_DIRECTION MD
+		ON MCU.Movement_Direction_Key = MD.Movement_Direction_Key 
+			AND (MD.Outbound = 0)
+		INNER JOIN
+			MOVEMENT M
+		ON MD.Movement_Key = M.Movement_Key AND (M.Movement_Type = 0 OR M.Movement_Type = 1))
+	ON CU.Collection_Unit_Key = MCU.Collection_Unit_Key*@*@SELECT 1 AS [Count]*@*@1*@*@SYSTEM0000000000*@*@*@*@1*@*@SYSTEM00*@*@00000000002E6143!@!@SYSTEM0000000001*@*@SYSTEM0000000013*@*@SYSTEM0000000001*@*@SET NOCOUNT ON
+-- Set of options for better use of vw_ConceptTerm.
+SET ANSI_NULLS ON
+SET ANSI_PADDING ON
+SET ANSI_WARNINGS ON
+SET ARITHABORT ON
+SET CONCAT_NULL_YIELDS_NULL ON
+SET QUOTED_IDENTIFIER ON
+SET NO_BROWSETABLE OFF
+
+SELECT 		CUD.Collection_Unit_Data_Key AS Item_Key,
+		CUD.Applies_To,
+		CTM.Item_Name AS Method_Term,
+		CUD.Duration,
+		CUD.Accuracy,
+		CTP.Item_Name AS Parameter_Term,
+		CTU.Item_Name AS Unit_Term,
+		CASE
+			WHEN CUD.Upper_Value IS NULL THEN CUD.Lower_Value
+			ELSE CUD.Lower_Value + ' - ' + CUD.Upper_Value				
+		END AS Value
+FROM 		Collection_Unit_Data CUD
+INNER JOIN 	vw_ConceptTerm CTP ON CTP.Concept_Key = CUD.Parameter_Concept_Key
+LEFT JOIN 	vw_ConceptTerm CTM ON CTM.Concept_Key = CUD.Method_Concept_Key
+LEFT JOIN 	vw_ConceptTerm CTU ON CTU.Concept_Key = CUD.Unit_Concept_Key
+LEFT JOIN 	Collection_Unit CU ON CU.Collection_Unit_Key = CUD.Collection_Unit_Key
+WHERE 		CUD.Collection_Unit_Key = '<#ReportKey>'
+	AND 		CUD.Is_Descriptor = 0*@*@SET NOCOUNT ON
+SELECT COUNT(*) AS [Count]
+FROM 		Collection_Unit_Data
+WHERE 		Collection_Unit_Key = '<#ReportKey>'
+	AND 	Is_Descriptor = 0
+
+SET NOCOUNT OFF*@*@1*@*@SYSTEM0000000000*@*@*@*@1*@*@SYSTEM00*@*@00000000002E6146!@!@SYSTEM0000000002*@*@SYSTEM0000000014*@*@SYSTEM0000000002*@*@SET NOCOUNT ON
+-- Set of options for better use of vw_ConceptTerm.
+SET ANSI_NULLS ON
+SET ANSI_PADDING ON
+SET ANSI_WARNINGS ON
+SET ARITHABORT ON
+SET CONCAT_NULL_YIELDS_NULL ON
+SET QUOTED_IDENTIFIER ON
+SET NO_BROWSETABLE OFF
+
+SELECT 		CUD.Collection_Unit_Data_Key AS Item_Key,
+		CUD.Applies_To,
+		CTM.Item_Name AS Method_Term,
+		CUD.Duration,
+		CUD.Accuracy,
+		CTP.Item_Name AS Parameter_Term,
+		CTU.Item_Name AS Unit_Term,
+		CUD.Lower_Value AS Value
+FROM 		Collection_Unit_Data CUD
+INNER JOIN 	vw_ConceptTerm CTP ON CTP.Concept_Key = CUD.Parameter_Concept_Key
+LEFT JOIN 	vw_ConceptTerm CTM ON CTM.Concept_Key = CUD.Method_Concept_Key
+LEFT JOIN 	vw_ConceptTerm CTU ON CTU.Concept_Key = CUD.Unit_Concept_Key
+LEFT JOIN 	Collection_Unit CU ON CU.Collection_Unit_Key = CUD.Collection_Unit_Key
+WHERE 		CUD.Collection_Unit_Key = '<#ReportKey>'
+AND 		CUD.Is_Descriptor = 1*@*@SET NOCOUNT ON
+
+SELECT COUNT(*) AS [Count]
+FROM 		Collection_Unit_Data
+WHERE 		Collection_Unit_Key = '<#ReportKey>'
+AND 		Is_Descriptor = 1
+
+SET NOCOUNT OFF*@*@1*@*@SYSTEM0000000000*@*@*@*@1*@*@SYSTEM00*@*@00000000002E6149!@!@SYSTEM0000000003*@*@SYSTEM0000000015*@*@SYSTEM0000000003*@*@SET NOCOUNT ON
+-- Set of options for better use of vw_ConceptTerm.
+SET ANSI_NULLS ON
+SET ANSI_PADDING ON
+SET ANSI_WARNINGS ON
+SET ARITHABORT ON
+SET CONCAT_NULL_YIELDS_NULL ON
+SET QUOTED_IDENTIFIER ON
+SET NO_BROWSETABLE OFF
+
+DECLARE @Key CHAR(16)
+DECLARE @ShowCommonNames BIT
+
+SET @Key = '<#ReportKey>'
+SET @ShowCommonNames = <#ShowCommonNames>
+
+SET NOCOUNT ON
+
+DECLARE @ResultTable TABLE
+(	[Collection_Unit_Key] [char] (16) COLLATE database_default NOT NULL,
+	[RegNo] [varchar] (30) COLLATE database_default NULL,
+	[Determination] [nvarchar] (185) COLLATE database_default NOT NULL,
+	[Type] [nvarchar] (150) COLLATE database_default NULL,
+	[FieldCollector] [varchar] (70) COLLATE database_default NULL,
+	[GatheringSite] [varchar] (100) COLLATE database_default NULL,
+	[GatheringDate] [varchar] (50) COLLATE database_default NULL,
+	[StoreCode] [varchar] (30) COLLATE database_default NULL
+)
+
+--Find all basic data
+INSERT INTO	@ResultTable
+	([Collection_Unit_Key],
+	[RegNo],
+	[Determination],
+	[Type],
+	[FieldCollector],
+	[StoreCode]
+	)
+
+SELECT DISTINCT
+	SU.Collection_Unit_Key,
+	CUN.Number AS RegNo,
+	CASE WHEN SU.Life_Sciences = 0 THEN 
+		ISNULL(dbo.ufn_ConceptItemName_Get(D.Concept_Key, @ShowCommonNames, 0, 1), 'No Determination') 
+	ELSE
+		ISNULL(dbo.ufn_GetFormattedTaxonNameByParams(ITN.Actual_Name, ITN.Actual_Name_Italic, ITN.Common_Name, 
+					ITN.Common_Name_Italic, ITN.Authority, @ShowCommonNames), 'No Determination') 
+	END AS Determination,
+	CTType.Item_Name AS Type,
+ 	dbo.ufn_GetFieldCollectors(@Key) AS FieldCollector,
+	CU.Current_Location_Code AS StoreCode
+FROM				
+
+	COLLECTION_UNIT_RELATION CUR
+	INNER JOIN
+		THESAURUS_RELATION_TYPE TRT
+	ON CUR.Thesaurus_Relation_Type_Key = TRT.Thesaurus_Relation_Type_Key
+	
+	INNER JOIN
+		SEMANTIC_RELATION SR
+	ON TRT.Semantic_Relation_Key = SR.Semantic_Relation_Key
+		AND (CUR.From_Collection_Unit_Key = @Key)
+			OR ((CUR.To_Collection_Unit_Key = @Key) AND (SR.Unidirectional = 0))
+	
+	LEFT JOIN
+		Specimen_Unit SU
+	ON CUR.To_Collection_Unit_Key = SU.Collection_Unit_Key 
+
+	INNER JOIN
+		Collection_Unit CU
+	ON SU.Collection_Unit_Key = CU.Collection_Unit_Key
+
+	INNER JOIN 	
+		VW_ConceptTerm AS CTType ON 
+	SU.Specimen_Type_Concept_Key = CTType.Concept_Key
+
+	LEFT JOIN 
+		Collection_Unit_Number CUN 
+	ON SU.Collection_Unit_key = CUN.Collection_Unit_Key
+		AND CUN.Preferred = 1 
+		AND CUN.Type_Concept_Key = 'SYSTEM0000000001'--Reg Number
+
+	LEFT JOIN 
+		Determination D 
+	ON D.Determination_Key = SU.Preferred_Determination_Key
+
+	LEFT JOIN 
+		VW_ConceptTermPreferred CTN1
+	ON D.Nomenclatural_Status_Concept_Key = CTN1.Concept_Key
+
+	LEFT JOIN 
+		Taxon_Determination TD 
+	ON SU.Preferred_Taxon_Determination_Key = TD.Taxon_Determination_Key
+	LEFT JOIN 
+		Index_Taxon_Name ITN 
+	ON ITN.Taxon_List_Item_Key = TD.Taxon_List_Item_Key
+
+
+DECLARE
+	@Collection_Unit_Key AS char(16),
+	@RegNumber varchar(30),
+	@Determination nvarchar(185),
+	@Type nvarchar(150),
+	@FieldCollector varchar(70),
+	@GatheringSite varchar(100),
+	@GatheringDate varchar(50),
+	@StoreCode varchar(30)
+
+DECLARE @ShortDateFormat varchar(12)
+
+SELECT @ShortDateFormat = Data FROM Setting WHERE [Name] = 'ShortDates'
+
+DECLARE csr CURSOR LOCAL FAST_FORWARD
+FOR 
+SELECT 
+	[Collection_Unit_Key],
+	[RegNo],
+	[Determination],
+	[Type],
+	[FieldCollector],
+	[GatheringSite],
+	[GatheringDate],
+	[StoreCode]
+FROM
+	@ResultTable
+
+OPEN csr
+
+FETCH NEXT FROM csr INTO @Collection_Unit_Key, @RegNumber, @Determination, @Type, 
+	@FieldCollector, @GatheringSite, @GatheringDate, @StoreCode
+WHILE @@FETCH_STATUS = 0
+BEGIN
+
+EXEC usp_SpecimenLocation_Get @Key, @GatheringSite OUTPUT
+EXEC usp_SpecimenDate_Get @Key, @ShortDateFormat, @GatheringDate OUTPUT
+
+UPDATE @ResultTable
+	SET GatheringSite = @GatheringSite,
+		GatheringDate = @GatheringDate
+WHERE Collection_Unit_Key = @Collection_Unit_Key
+
+
+FETCH NEXT FROM csr INTO @Collection_Unit_Key, @RegNumber, @Determination, @Type, 
+	@FieldCollector, @GatheringSite, @GatheringDate, @StoreCode
+END --End While
+
+CLOSE csr
+DEALLOCATE csr
+
+SELECT 
+	[Collection_Unit_Key],
+	[RegNo],
+	[Determination],
+	[Type],
+	[FieldCollector],
+	[GatheringSite],
+	[GatheringDate],
+	[StoreCode]
+FROM
+	@ResultTable*@*@DECLARE @Key CHAR(16)
+
+SET @Key = '<#ReportKey>'
+SET NOCOUNT ON
+
+SELECT COUNT(DISTINCT SU.Collection_Unit_Key) AS [Count]
+FROM				
+	COLLECTION_UNIT_RELATION CUR
+	INNER JOIN
+		THESAURUS_RELATION_TYPE TRT
+	ON CUR.Thesaurus_Relation_Type_Key = TRT.Thesaurus_Relation_Type_Key
+	INNER JOIN
+		SEMANTIC_RELATION SR
+	ON TRT.Semantic_Relation_Key = SR.Semantic_Relation_Key
+		AND (CUR.From_Collection_Unit_Key = @Key)
+			OR ((CUR.To_Collection_Unit_Key = @Key) AND (SR.Unidirectional = 0))
+	LEFT JOIN
+		Specimen_Unit SU
+	ON CUR.To_Collection_Unit_Key = SU.Collection_Unit_Key*@*@1*@*@SYSTEM0000000000*@*@*@*@1*@*@SYSTEM00*@*@00000000002E614C!@!@SYSTEM0000000004*@*@SYSTEM0000000016*@*@SYSTEM0000000004*@*@-- Set of options for better use of vw_ConceptTerm.
+SET NOCOUNT ON
+SET ANSI_NULLS ON
+SET ANSI_PADDING ON
+SET ANSI_WARNINGS ON
+SET ARITHABORT ON
+SET CONCAT_NULL_YIELDS_NULL ON
+SET QUOTED_IDENTIFIER ON
+SET NO_BROWSETABLE OFF
+
+DECLARE @Key CHAR(16)
+DECLARE @ShowCommonNames BIT
+
+SET @Key = '<#ReportKey>'
+SET @ShowCommonNames = <#ShowCommonNames>
+
+SELECT
+	CASE WHEN SU.Life_Sciences = 0 THEN 
+		ISNULL(dbo.ufn_ConceptItemName_Get(D.Concept_Key, @ShowCommonNames, 0, 1), 'No Determination') 
+	ELSE
+		ISNULL(dbo.ufn_GetFormattedTaxonNameByParams(ITN.Actual_Name, ITN.Actual_Name_Italic, ITN.Common_Name, 
+					ITN.Common_Name_Italic, ITN.Authority, @ShowCommonNames), 'No Determination') 
+	END AS Determination,
+	
+	CASE WHEN SU.Life_Sciences = 0 THEN
+		dbo.ufn_GetFormattedName(D.Determiner_Name_Key)
+	ELSE
+		dbo.ufn_GetFormattedName(TD.Determiner)
+	END AS Determiner,
+	CASE WHEN SU.Life_Sciences = 0 THEN
+		dbo.ufn_GetDateFromVagueDate(D.Vague_Date_Start, D.Vague_Date_End, D.Vague_Date_Type)
+	ELSE
+		dbo.ufn_GetDateFromVagueDate(D.Vague_Date_Start, D.Vague_Date_End, D.Vague_Date_Type)
+	END AS DetDate,
+	CASE WHEN SU.Life_Sciences = 0 THEN
+		DT.Short_Name
+	ELSE
+		TDT.Short_Name
+	END AS Type,
+	CASE WHEN SU.Life_Sciences = 0 THEN
+		dbo.ufn_GetTranslation_String_From_Value(D.Confidence, 'Confidence')
+	ELSE
+		dbo.ufn_GetTranslation_String_From_Value(TD.Confidence, 'Confidence')
+	END AS Confidence
+FROM 
+	Specimen_Unit SU
+
+	LEFT JOIN 
+		(Taxon_Determination TD
+		INNER JOIN
+			Determination_Type TDT
+		ON TD.Determination_Type_Key = TDT.Determination_Type_Key
+		INNER JOIN
+			Index_Taxon_Name ITN
+		ON TD.Taxon_List_Item_Key = ITN.Taxon_List_Item_Key
+		LEFT JOIN
+			Concept C
+		ON TD.Nomenclatural_Status_Concept_Key = C.Concept_Key)
+	ON SU.Collection_Unit_Key = TD.Specimen_Collection_Unit_Key 
+
+	LEFT JOIN
+		(Determination D
+		INNER JOIN
+			Determination_Type DT
+		ON D.Determination_Type_Key = DT.Determination_Type_Key
+		INNER JOIN 
+			VW_ConceptTerm CT 
+		ON D.Concept_Key = CT.Concept_Key)
+	ON SU.Collection_Unit_Key = D.Specimen_Collection_Unit_Key 
+WHERE SU.Collection_Unit_Key = @Key*@*@DECLARE @Key CHAR(16)
+
+SET NOCOUNT ON
+SET @Key = '<#ReportKey>'
+
+SELECT COUNT(*) AS [Count]
+FROM 
+	Specimen_Unit SU
+
+	LEFT JOIN 
+		Taxon_Determination TD
+	ON SU.Collection_Unit_Key = TD.Specimen_Collection_Unit_Key 
+
+	LEFT JOIN
+		Determination D
+	ON SU.Collection_Unit_Key = D.Specimen_Collection_Unit_Key 
+WHERE SU.Collection_Unit_Key = @Key*@*@1*@*@SYSTEM0000000000*@*@*@*@1*@*@SYSTEM00*@*@00000000002E614F!@!@SYSTEM0000000005*@*@SYSTEM0000000017*@*@SYSTEM0000000005*@*@SET NOCOUNT ON
+DECLARE @Key CHAR(16)
+
+SET @Key = '<#ReportKey>'
+
+SELECT DISTINCT
+ 	SUR.Item_Name AS SurveyName,
+	LN.Item_Name AS LocationName,
+	dbo.ufn_GetFieldCollectors(@Key) AS FieldCollectors,
+	dbo.ufn_GetDateFromVagueDate(S.Vague_Date_Start, S.Vague_Date_End, S.Vague_Date_Type) AS SampleDate
+FROM
+	Specimen_Unit SU
+	INNER JOIN 
+		Specimen_Field_Data SFD 
+	ON SU.Collection_Unit_Key = SFD.Collection_Unit_Key
+		AND SU.Collection_Unit_Key = @Key
+	LEFT JOIN 
+		Occurrence O 
+	ON SFD.Occurrence_Key = O.Occurrence_Key
+	LEFT JOIN
+		Taxon_Occurrence XO
+	ON SFD.Taxon_Occurrence_Key = XO.Taxon_Occurrence_Key
+	INNER JOIN 
+		[Sample] S
+	ON ((O.Sample_Key = S.Sample_Key) OR (XO.Sample_Key = S.Sample_Key))
+	INNER JOIN
+		Survey_Event SE
+	ON S.Survey_Event_Key = SE.Survey_Event_Key
+	INNER JOIN
+		Survey SUR
+	ON SE.Survey_Key = SUR.Survey_Key
+	LEFT JOIN
+		Location_Name LN
+	ON S.Location_Key = LN.Location_Key*@*@SET NOCOUNT ON
+DECLARE @Key CHAR(16)
+
+SET @Key = '<#ReportKey>'
+
+SELECT COUNT(DISTINCT S.Sample_Key) AS [Count]
+FROM
+	Specimen_Unit SU
+	INNER JOIN 
+		Specimen_Field_Data SFD 
+	ON SU.Collection_Unit_Key = SFD.Collection_Unit_Key
+		AND SU.Collection_Unit_Key = @Key
+	LEFT JOIN 
+		Occurrence O 
+	ON SFD.Occurrence_Key = O.Occurrence_Key
+	LEFT JOIN
+		Taxon_Occurrence XO
+	ON SFD.Taxon_Occurrence_Key = XO.Taxon_Occurrence_Key
+	INNER JOIN 
+		[Sample] S
+	ON ((O.Sample_Key = S.Sample_Key) OR (XO.Sample_Key = S.Sample_Key))*@*@1*@*@SYSTEM0000000000*@*@*@*@1*@*@SYSTEM00*@*@00000000002E6152!@!@SYSTEM0000000006*@*@SYSTEM0000000018*@*@SYSTEM0000000006*@*@EXEC usp_StoragePlace_Select_ForCollectionUnit <#UserDomainMask>, '<#SessionID>', '<#ReportKey>'*@*@DECLARE 
+	@COLLECTION_UNIT_KEY CHAR(16), 
+	@PARENT_COLLECTION_UNIT_KEY CHAR(16), 
+	@Item_Index INT
+
+--Obtain parent of input store
+SELECT @PARENT_COLLECTION_UNIT_KEY = CU.Current_Container_Collection_Unit_Key
+FROM 
+	COLLECTION_UNIT CU
+WHERE CU.Collection_Unit_Key = '<#ReportKey>'
+
+SET @Item_Index = 0
+
+--Obtain successive parents
+WHILE @PARENT_COLLECTION_UNIT_KEY IS NOT NULL
+BEGIN
+	SELECT 	@COLLECTION_UNIT_KEY = S.Collection_Unit_Key, 
+			@PARENT_COLLECTION_UNIT_KEY = CU.Current_Container_Collection_Unit_Key
+	FROM 
+		STORE S
+		INNER JOIN
+			COLLECTION_UNIT CU
+		ON S.Collection_Unit_Key = CU.Collection_Unit_Key
+			AND S.Collection_Unit_Key = @PARENT_COLLECTION_UNIT_KEY
+	
+	SET @Item_Index = @Item_Index + 1
+END
+
+--Return the hierarchical record count
+SELECT @Item_Index AS [Count]*@*@1*@*@SYSTEM0000000000*@*@*@*@1*@*@SYSTEM00*@*@0000000000595B3A!@!@SYSTEM0000000007*@*@SYSTEM0000000019*@*@SYSTEM0000000007*@*@SET NOCOUNT ON
+SELECT 
+	Specimen_Label_Key AS Item_Key, 
+	Inscription AS Item_Name, 
+	dbo.ufn_GetTranslation_String_From_Value(Is_Inscription, 'LabelInscription') AS Type,
+	dbo.ufn_GetFormattedName(Author_Name_Key) AS Author
+FROM 
+	SPECIMEN_LABEL
+WHERE Collection_Unit_Key = '<#ReportKey>'*@*@SET NOCOUNT ON
+SELECT COUNT(*) AS [Count]
+FROM 
+	SPECIMEN_LABEL
+WHERE Collection_Unit_Key = '<#ReportKey>'*@*@1*@*@SYSTEM0000000000*@*@*@*@1*@*@SYSTEM00*@*@00000000002E6158!@!@SYSTEM0000000008*@*@SYSTEM0000000020*@*@SYSTEM0000000008*@*@SET NOCOUNT ON
+SELECT R.Title AS Document,
+	dbo.ufn_GetTranslation_String_From_Value(SJ.Original, 'YesNo') AS Original,
+	R.Reference_Type AS Type
+FROM
+	Source_Join AS SJ
+	INNER JOIN
+		Reference AS R
+	ON R.Source_Key = SJ.Source_Key
+	INNER JOIN
+		Source AS S 
+	ON S.Source_Key = SJ.Source_Key 
+	AND S.Internal = 1
+WHERE SJ.Record_Key = '<#ReportKey>'
+	AND SJ.Table_Name = 'Specimen_Unit'*@*@SET NOCOUNT ON
+SELECT COUNT(*) AS [Count]
+FROM
+	Source_Join AS SJ
+	INNER JOIN
+		Reference AS R
+	ON R.Source_Key = SJ.Source_Key
+	INNER JOIN
+		Source AS S 
+	ON S.Source_Key = SJ.Source_Key 
+	AND S.Internal = 1
+WHERE SJ.Record_Key = '<#ReportKey>'
+	AND SJ.Table_Name = 'Specimen_Unit'*@*@1*@*@SYSTEM0000000000*@*@*@*@1*@*@SYSTEM00*@*@00000000002E615B!@!@SYSTEM0000000009*@*@SYSTEM0000000021*@*@SYSTEM0000000009*@*@SET NOCOUNT ON
+SELECT SF.[File_Name] AS Item_Name
+FROM		Source_Join AS SJ
+INNER JOIN	Source_File AS SF ON SF.Source_Key = SJ.Source_Key
+INNER JOIN	Source AS S ON S.Source_Key = SJ.Source_Key AND S.Internal = 0
+WHERE		SJ.Record_Key = '<#ReportKey>'
+AND 		Table_Name = 'Specimen_Unit'*@*@SET NOCOUNT ON
+SELECT COUNT(*) AS [Count]
+FROM		Source_Join AS SJ
+INNER JOIN	Source_File AS SF ON SF.Source_Key = SJ.Source_Key
+INNER JOIN	Source AS S ON S.Source_Key = SJ.Source_Key AND S.Internal = 0
+WHERE		SJ.Record_Key = '<#ReportKey>'
+AND 		Table_Name = 'Specimen_Unit'*@*@1*@*@SYSTEM0000000000*@*@*@*@1*@*@SYSTEM00*@*@00000000002E615E!@!@

@@ -1,0 +1,2 @@
+inherited fraTaskCollectionUnits: TfraTaskCollectionUnits
+end

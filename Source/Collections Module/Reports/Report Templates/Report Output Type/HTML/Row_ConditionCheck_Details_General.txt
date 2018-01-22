@@ -1,0 +1,29 @@
+<TABLE WIDTH="100%" CELLSPACING="0">
+<COL WIDTH = "25%">
+<COL WIDTH = "*">
+<TR>
+	<TD class="bold">Reference Number:</TD>
+	<TD><#RefNo></TD>
+</TR>
+<TR>
+	<TD class="bold">Date:</TD>
+	<TD><#Date></TD>
+	</TR>
+<TR>
+	<TD class="bold">Checked By & Type:</TD>
+	<TD><#CheckedByType></TD>
+</TR>
+<TR>
+	<TD class="bold">Condition:</TD>
+	<TD><#Condition></TD>
+</TR>
+<TR>
+	<TD class="bold">Details:</TD>
+	<TD><#Details></TD>
+</TR>
+<TR>
+	<TD class="bold">Known Domains:</TD>
+	<TD><#Domains></TD>
+</TR>
+</TABLE>
+<BR>

@@ -1,0 +1,2 @@
+inherited fraConceptHistory: TfraConceptHistory
+end

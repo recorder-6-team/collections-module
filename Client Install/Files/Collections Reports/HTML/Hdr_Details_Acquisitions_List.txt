@@ -1,0 +1,9 @@
+<H4><#BlockTitle></H4>
+<TABLE WIDTH="100%" CELLSPACING="0">
+<TR>
+	<TH>Date</TH>
+	<TH>Acquired From</TH>
+	<TH>Completed</TH>
+	<TH>Method</TH>
+	<TH>Amount Paid</TH>
+</TR>

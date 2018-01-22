@@ -1,0 +1,11 @@
+<TABLE WIDTH="100%" CELLSPACING="0">
+<COL WIDTH = "35%">
+<COL WIDTH = "30%">
+<COL WIDTH = "20%">
+<COL WIDTH = "*">
+<TR>
+	<TD class="bold">Survey Name</TD>
+	<TD class="bold">Location</TD>
+	<TD class="bold">Collectors</TD>
+	<TD class="bold">Date</TD>
+</TR>

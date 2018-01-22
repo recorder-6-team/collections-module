@@ -1,0 +1,51 @@
+package InHouse7;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'In House Components - Design-time/Runtime (Delphi 7)'}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  vcl,
+  UnitLib7,
+  vclx;
+
+contains
+  SortListView in '..\..\DssVcl32\SortListView.pas',
+  ColorBtn in '..\..\DssVcl32\ColorBtn.pas',
+  ColPal in '..\..\DssVcl32\ColPal.pas' {dlgColorPalette},
+  ComboListID in '..\..\DssVcl32\ComboListID.pas',
+  ComboListSelect in '..\..\DssVcl32\ComboListSelect.pas',
+  DateEdit in '..\..\DssVcl32\DateEdit.pas',
+  FolderBrowser in '..\..\DssVcl32\FolderBrowser.pas',
+  GroupBoxEx in '..\..\DssVcl32\GroupBoxEx.pas',
+  HotLabel in '..\..\DssVcl32\HotLabel.pas',
+  ImageListButton in '..\..\DssVcl32\ImageListButton.pas',
+  LicenceCheck in '..\..\DssVcl32\LicenceCheck.pas',
+  RestrictedEdits in '..\..\DssVcl32\RestrictedEdits.pas',
+  XPToolButton in '..\..\DssVcl32\XPToolButton.pas',
+  ControlStringGrid in '..\..\DssVcl32\ControlStringGrid.pas',
+  DssStringGrid in '..\..\DssVcl32\DssStringGrid.pas';
+
+end.

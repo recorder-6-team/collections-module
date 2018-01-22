@@ -1,0 +1,9 @@
+<TR>
+	<TD><#PrefNo></TD>
+	<TD><#Determination></TD>
+	<TD><#Type></TD>
+	<TD><#FieldCollector></TD>
+	<TD><#GatheringSite></TD>
+	<TD><#GatheringDate></TD>
+	<TD><#StoreCode></TD>
+</TR>

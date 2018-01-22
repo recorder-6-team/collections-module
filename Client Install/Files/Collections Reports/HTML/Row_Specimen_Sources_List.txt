@@ -1,0 +1,5 @@
+<TR>
+	<TD><#Document></TD>
+	<TD><#Original></TD>
+	<TD><#Type></TD>
+</TR>

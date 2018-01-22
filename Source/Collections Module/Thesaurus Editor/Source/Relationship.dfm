@@ -1,0 +1,2 @@
+inherited fraRelationship: TfraRelationship
+end

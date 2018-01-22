@@ -1,0 +1,8 @@
+<TR>
+	<TD><#RefNo></TD>
+	<TD><#Date></TD>
+	<TD><#Type></TD>
+	<TD><#ValuedBy></TD>
+	<TD><#Value></TD>
+	<TD><#Valid></TD>
+</TR>

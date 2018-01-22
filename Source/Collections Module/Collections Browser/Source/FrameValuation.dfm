@@ -1,0 +1,2 @@
+inherited fraValuation: TfraValuation
+end

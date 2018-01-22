@@ -1,0 +1,4 @@
+<TR>
+	<TD><#Material></TD>
+	<TD><#Quantity></TD>
+</TR>

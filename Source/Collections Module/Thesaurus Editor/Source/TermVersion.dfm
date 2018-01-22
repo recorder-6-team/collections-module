@@ -1,0 +1,2 @@
+inherited fraTermVersion: TfraTermVersion
+end

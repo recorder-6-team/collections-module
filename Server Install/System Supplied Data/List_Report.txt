@@ -1,0 +1,173 @@
+SYSTEM0000000000*@*@Accessions List*@*@SELECT
+		M.Number AS AccNo,
+		dbo.ufn_GetDateFromVagueDate(M.Exp_Vague_Date_Start, M.Exp_Vague_Date_End, M.Exp_Vague_Date_Type) AS [Date],
+		dbo.ufn_GetFormattedName(M.Other_Party_Name_Key) AS AccessedFrom,
+		dbo.ufn_GetFormattedName(M.Staff_Responsible_Name_Key) AS StaffResp,
+		dbo.ufn_GetFormattedName(I.Organisation_Department_Key) AS Department
+FROM		Movement AS M
+LEFT JOIN	Individual AS I ON I.Name_Key = M.Staff_Responsible_Name_Key
+WHERE		M.Movement_Type = 0
+AND		M.Movement_Key IN (<#ReportKeys>)*@*@SYSTEM0000000000*@*@Movement*@*@SYSTEM0000000000*@*@*@*@1*@*@SYSTEM00!@!@SYSTEM0000000001*@*@Collections List*@*@SELECT 
+		M.Number AS AccNo,
+		C.Item_Name AS [Name],
+		dbo.ufn_GetFormattedName(Assembler_Name_Key) AS AssembledBy,
+		C.Topic,
+		CASE WHEN CN.Number IS NULL THEN
+			S.Item_Name
+	  	ELSE
+			S.Item_Name + ' - ' + CN.Number
+	  	END AS Store
+FROM 		Collection C
+INNER JOIN 	Collection_Unit CU ON CU.Collection_Unit_Key=C.Collection_Unit_Key
+LEFT JOIN 	Store S on S.Collection_Unit_Key=CU.Current_Container_Collection_Unit_Key
+LEFT JOIN 	(Collection_Unit_Number CN
+			INNER JOIN 	Concept CPT ON CPT.Concept_Key=CN.Type_Concept_Key
+					AND CPT.Meaning_Key='SYSTEM0000000001')
+ 		ON CN.Collection_Unit_Key=S.Collection_Unit_Key
+		AND CN.Preferred=1
+LEFT JOIN 	(MOVEMENT_COLLECTION_UNIT MCU 
+			INNER JOIN 	MOVEMENT_DIRECTION MD ON MCU.Movement_Direction_Key = MD.Movement_Direction_Key 
+					AND MD.Outbound = 0
+			INNER JOIN 	MOVEMENT M ON MD.Movement_Key = M.Movement_Key 
+					AND (M.Movement_Type = 0 OR M.Movement_Type = 1)) 
+		ON CU.Collection_Unit_Key = MCU.Collection_Unit_Key
+WHERE 		C.Collection_Unit_Key IN (<#ReportKeys>)*@*@SYSTEM0000000001*@*@Collection*@*@SYSTEM0000000000*@*@*@*@1*@*@SYSTEM00!@!@SYSTEM0000000002*@*@Jobs List*@*@SET ANSI_NULLS ON
+SET ANSI_PADDING ON
+SET ANSI_WARNINGS ON
+SET CONCAT_NULL_YIELDS_NULL ON
+SET QUOTED_IDENTIFIER ON
+SET NO_BROWSETABLE OFF
+
+SELECT
+		CJ.Job_Number AS JobNo,
+		CJ.Item_Name AS [Name],
+		dbo.ufn_GetDateFromVagueDate(CJ.From_Vague_Date_Start, CJ.From_Vague_Date_End, CJ.From_Vague_Date_Type) + ' - ' +
+			dbo.ufn_GetDateFromVagueDate(CJ.To_Vague_Date_Start, CJ.To_Vague_Date_End, CJ.To_Vague_Date_Type) AS Dates,
+		CAST(Round(CJ.Duration, 2) AS varchar(20)) + ' ' + CTUnit.Item_Name AS Duration,
+		CJ.Cost AS MaterialCost,
+		dbo.ufn_GetConservationStatus(CJ.Status) AS Status
+FROM		Conservation_Job AS CJ
+LEFT JOIN	VW_ConceptTerm CTUnit ON CTUnit.Concept_Key = CJ.Duration_Unit_Concept_Key
+WHERE		CJ.Conservation_Job_Key IN (<#ReportKeys>)*@*@SYSTEM0000000002*@*@Conservation_Job*@*@SYSTEM0000000000*@*@*@*@1*@*@SYSTEM00!@!@SYSTEM0000000003*@*@Condition Checks List*@*@SET ANSI_NULLS ON
+SET ANSI_PADDING ON
+SET ANSI_WARNINGS ON
+SET CONCAT_NULL_YIELDS_NULL ON
+SET QUOTED_IDENTIFIER ON
+SET NO_BROWSETABLE OFF
+
+SELECT
+		CC.Ref_Number AS RefNo,
+		CTType.Item_Name AS Type,
+		CC.Details,
+		CTCondition.Item_Name AS Condition,
+		dbo.ufn_GetFormattedName(CC.Checked_By_Name_Key) AS CheckedBy,
+		dbo.ufn_GetDateFromVagueDate(CC.Vague_Date_Start, CC.Vague_Date_End, CC.Vague_Date_Type) AS [Date]
+FROM		Conservation_Check AS CC
+INNER JOIN	VW_ConceptTerm AS CTType ON CTType.Concept_Key = CC.Type_Concept_Key
+INNER JOIN	VW_ConceptTerm AS CTCondition ON CTCondition.Concept_Key = CC.Condition_Concept_Key
+WHERE		CC.Conservation_Check_Key IN (<#ReportKeys>)  *@*@SYSTEM0000000003*@*@Conservation_Check*@*@SYSTEM0000000000*@*@*@*@1*@*@SYSTEM00!@!@SYSTEM0000000004*@*@Exchanges List*@*@SELECT
+		M.Number AS RefNo,
+		dbo.ufn_GetDateFromVagueDate(M.Exp_Vague_Date_Start, M.Exp_Vague_Date_End, M.Exp_Vague_Date_Type) AS [Date],
+		dbo.ufn_GetFormattedName(M.Other_Party_Name_Key) AS ExchangedWith,
+		dbo.ufn_GetFormattedName(M.Staff_Responsible_Name_Key) AS StaffResp,
+		dbo.ufn_GetFormattedName(I.Organisation_Department_Key) AS Department
+FROM		Movement AS M
+LEFT JOIN	Individual AS I ON I.Name_Key = M.Staff_Responsible_Name_Key
+WHERE		M.Movement_Type = 1
+AND		M.Movement_Key IN (<#ReportKeys>)*@*@SYSTEM0000000004*@*@Movement*@*@SYSTEM0000000000*@*@*@*@1*@*@SYSTEM00!@!@SYSTEM0000000005*@*@Funding Sources List*@*@SELECT
+		dbo.ufn_GetDateFromVagueDate(F.Vague_Date_Start, F.Vague_Date_End, F.Vague_Date_Type) AS [Date],
+		dbo.ufn_GetFormattedName(F.Funded_By_Name_Key) AS FundedBy,
+		TF.Data AS CurrencySymbol,
+		CAST(ROUND(F.Amount,2) AS Varchar(20)) AS Amount,
+		F.Details
+FROM		Movement_Funding AS F
+LEFT JOIN	(Concept AS C
+			INNER JOIN Thesaurus_Fact AS TF ON TF.Meaning_Key = C.Meaning_Key)
+		ON C.Concept_Key = F.Currency_Concept_Key
+WHERE		F.Movement_Funding_Key IN (<#ReportKeys>)*@*@SYSTEM0000000005*@*@Movement_Funding*@*@SYSTEM0000000000*@*@*@*@1*@*@SYSTEM00!@!@SYSTEM0000000006*@*@Funding Sources List*@*@SELECT
+		dbo.ufn_GetDateFromVagueDate(F.Vague_Date_Start, F.Vague_Date_End, F.Vague_Date_Type) AS [Date],
+		dbo.ufn_GetFormattedName(F.Funded_By_Name_Key) AS FundedBy,
+		TF.Data AS CurrencySymbol,
+		CAST(ROUND(F.Amount, 2) AS varchar(20)) AS Amount,
+		F.Details
+FROM		Conservation_Job_Funding AS F
+LEFT JOIN	(Concept AS C
+			INNER JOIN Thesaurus_Fact AS TF ON TF.Meaning_Key = C.Meaning_Key)
+		ON C.Concept_Key = F.Currency_Concept_Key
+WHERE		F.Conservation_Job_Funding_Key IN (<#ReportKeys>)*@*@SYSTEM0000000006*@*@Conservation_Job_Funding*@*@SYSTEM0000000000*@*@*@*@1*@*@SYSTEM00!@!@SYSTEM0000000007*@*@Loans list*@*@SELECT
+		M.Number AS RefNo,
+		dbo.ufn_GetLoanDates(M.Movement_Key) AS Dates,
+		dbo.ufn_GetFormattedName(M.Other_Party_Name_Key) AS LoanedTo,
+		dbo.ufn_GetFormattedName(M.Staff_Responsible_Name_Key) AS StaffResp,
+		dbo.ufn_GetFormattedName(I.Organisation_Department_Key) AS Department,
+		dbo.ufn_GetMovementStatus(M.Movement_Key) AS Status
+FROM		Movement AS M
+LEFT JOIN	Individual AS I ON I.Name_Key = M.Staff_Responsible_Name_Key
+WHERE		(M.Movement_Type = 2 OR M.Movement_Type = 3)
+AND		M.Movement_Key IN (<#ReportKeys>)*@*@SYSTEM0000000007*@*@Movement*@*@SYSTEM0000000000*@*@*@*@1*@*@SYSTEM00!@!@SYSTEM0000000008*@*@Movements List*@*@SELECT
+		M.Number AS RefNo,
+		dbo.ufn_GetDateFromVagueDate(M.Exp_Vague_Date_Start, M.Exp_Vague_Date_End, M.Exp_Vague_Date_Type) AS [Date],
+		dbo.ufn_GetMovementTypeName(M.Movement_Type) AS Type,
+		dbo.ufn_GetFormattedName(M.Other_Party_Name_Key) AS MovedTo,
+		dbo.ufn_GetFormattedName(M.Staff_Responsible_Name_Key) AS StaffResp,
+		dbo.ufn_GetFormattedName(I.Organisation_Department_Key) AS Dept
+FROM		Movement AS M
+LEFT JOIN	Individual AS I ON I.Name_Key = M.Staff_Responsible_Name_Key
+WHERE		M.Movement_Key IN (<#ReportKeys>)*@*@SYSTEM0000000008*@*@Movement*@*@SYSTEM0000000000*@*@*@*@1*@*@SYSTEM00!@!@SYSTEM0000000009*@*@Specimens List*@*@SET ANSI_NULLS ON
+SET ANSI_PADDING ON
+SET ANSI_WARNINGS ON
+SET CONCAT_NULL_YIELDS_NULL ON
+SET QUOTED_IDENTIFIER ON
+SET NO_BROWSETABLE OFF
+
+SELECT		
+		dbo.ufn_GetRegNumber(SU.Collection_Unit_Key) AS RegNo,
+		CASE 	WHEN SU.Life_Sciences = 0 THEN 
+				ISNULL(CT.Item_Name, 'No Determination') 
+			ELSE
+				ISNULL(dbo.ufn_GetFormattedTaxonNameByParams(ITN.Actual_Name, ITN.Actual_Name_Italic, ITN.Common_Name, 
+						ITN.Common_Name_Italic, ITN.Authority, 1), 'No Determination') 
+			END AS Determination,
+		CTType.PlainText AS Type,
+		dbo.ufn_GetFieldCollectors(SU.Collection_Unit_Key) AS FieldCollector,
+		dbo.ufn_GetSpecimenGatheringSite(SU.Collection_Unit_Key) AS GatheringSite,
+		dbo.ufn_GetSpecimenGatheringDate(SU.Collection_Unit_Key) AS GatheringDate,
+		CU.Current_Location_Code AS Store
+FROM		Specimen_Unit AS SU
+INNER JOIN	Collection_Unit AS CU ON CU.Collection_Unit_Key = SU.Collection_Unit_Key
+INNER JOIN 	VW_ConceptTerm AS CTType ON CTType.Concept_Key = SU.Specimen_Type_Concept_Key
+LEFT JOIN 	Determination D ON D.Determination_Key = SU.Preferred_Determination_Key
+LEFT JOIN 	VW_ConceptTermPreferred CT ON CT.Concept_Key = D.Concept_Key
+LEFT JOIN 	Taxon_Determination TD ON SU.Preferred_Taxon_Determination_Key = TD.Taxon_Determination_Key
+LEFT JOIN 	Index_Taxon_Name ITN ON ITN.Taxon_List_Item_Key = TD.Taxon_List_Item_Key
+WHERE		SU.Collection_Unit_Key IN (<#ReportKeys>)*@*@SYSTEM0000000009*@*@Specimen_Unit*@*@SYSTEM0000000000*@*@*@*@1*@*@SYSTEM00!@!@SYSTEM0000000010*@*@Stores List*@*@SELECT
+		dbo.ufn_GetRegNumber(S.Collection_Unit_Key) AS RefNo,
+		S.Item_Name AS [Name],
+		CTS.PlainText AS Type,
+		CU.Current_Location_Code AS Store
+FROM		Store AS S
+INNER JOIN	Collection_Unit AS CU ON CU.Collection_Unit_Key = S.Collection_Unit_Key
+INNER JOIN	VW_ConceptTerm AS CTS ON CTS.Concept_Key = S.Store_Type_Concept_Key
+WHERE		S.Collection_Unit_Key IN (<#ReportKeys>)*@*@SYSTEM0000000010*@*@Store*@*@SYSTEM0000000000*@*@*@*@1*@*@SYSTEM00!@!@SYSTEM0000000011*@*@Valuations List*@*@SET ANSI_NULLS ON
+SET ANSI_PADDING ON
+SET ANSI_WARNINGS ON
+SET CONCAT_NULL_YIELDS_NULL ON
+SET QUOTED_IDENTIFIER ON
+SET NO_BROWSETABLE OFF
+
+SELECT
+		V.Ref_Number AS RefNo,
+		dbo.ufn_GetDateFromVagueDate(V.Vague_Date_Start, V.Vague_Date_End, V.Vague_Date_Type) AS [Date],
+		CTT.Plaintext AS Type,
+		dbo.ufn_GetFormattedName(V.Valued_By_Name_Key) AS ValuedBy,
+		ISNULL	(CAST(TF.Data AS char(1)) + CAST(V.Value_Amount AS varchar(20)), 
+			CAST(V.Value_Amount AS varchar(20))) AS Value,
+		ISNULL	(dbo.ufn_GetDateFromVagueDate(V.Valid_From_Vague_Date_Start, V.Valid_From_Vague_Date_End, V.Valid_From_Vague_Date_Type) + ' - ' +
+				dbo.ufn_GetDateFromVagueDate(V.Valid_To_Vague_Date_Start, V.Valid_To_Vague_Date_End, V.Valid_To_Vague_Date_Type), 
+			dbo.ufn_GetDateFromVagueDate(V.Valid_From_Vague_Date_Start, V.Valid_From_Vague_Date_End, V.Valid_From_Vague_Date_Type)) AS [Valid]
+FROM		Valuation AS V
+LEFT JOIN 	VW_ConceptTerm CTT ON CTT.Concept_Key = V.Type_Concept_Key
+LEFT JOIN	(Concept AS C
+			INNER JOIN Thesaurus_Fact AS TF ON TF.Meaning_Key = C.Meaning_Key)
+		ON C.Concept_Key = V.Currency_Concept_Key
+WHERE		V.Valuation_Key IN (<#ReportKeys>)*@*@SYSTEM0000000011*@*@Valuation*@*@SYSTEM0000000000*@*@*@*@1*@*@SYSTEM00!@!@

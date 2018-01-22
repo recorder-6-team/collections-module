@@ -1,0 +1,2 @@
+inherited fraConcept: TfraConcept
+end

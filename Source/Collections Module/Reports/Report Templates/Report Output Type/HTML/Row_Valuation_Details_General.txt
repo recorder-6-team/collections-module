@@ -1,0 +1,33 @@
+<TABLE WIDTH="100%" CELLSPACING="0">
+<COL WIDTH = "25%">
+<COL WIDTH = "*">
+<TR>
+	<TD class="bold">Reference Number:</TD>
+	<TD><#ReferenceNumber></TD>
+</TR>
+<TR>
+	<TD class="bold">Date:</TD>
+	<TD><#Date></TD>
+	</TR>
+<TR>
+	<TD class="bold">Type:</TD>
+	<TD><#Type></TD>
+</TR>
+<TR>
+	<TD class="bold">Valued By:</TD>
+	<TD><#ValuedBy></TD>
+</TR>
+<TR>
+	<TD class="bold">Value:</TD>
+	<TD><#Value></TD>
+</TR>
+<TR>
+	<TD class="bold">Valid:</TD>
+	<TD><#Valid></TD>
+</TR>
+<TR>
+	<TD class="bold">Description:</TD>
+	<TD><#Description></TD>
+</TR>
+</TABLE>
+<BR>

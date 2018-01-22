@@ -1,0 +1,6 @@
+<selector caption="Unnumbered specimens">
+SELECT Specimen_Unit.Collection_Unit_Key
+FROM Specimen_Unit
+WHERE Specimen_Unit.Collection_Unit_Key IN (%s)
+AND dbo.ufn_GetPrefNumber(Collection_Unit_Key) = ''
+</selector>

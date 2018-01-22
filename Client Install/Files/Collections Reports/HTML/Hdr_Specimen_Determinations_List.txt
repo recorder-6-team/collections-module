@@ -1,0 +1,13 @@
+<TABLE WIDTH="100%" CELLSPACING="0">
+<COL WIDTH = "30%">
+<COL WIDTH = "30%">
+<COL WIDTH = "20%">
+<COL WIDTH = "10%">
+<COL WIDTH = "*">
+<TR>
+	<TD class="bold">Determination</TD>
+	<TD class="bold">Determiner</TD>
+	<TD class="bold">Date</TD>
+	<TD class="bold">Type</TD>
+	<TD class="bold">Confidence</TD>
+</TR>

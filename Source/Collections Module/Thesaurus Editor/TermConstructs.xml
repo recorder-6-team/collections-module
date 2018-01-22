@@ -1,0 +1,15 @@
+<constructs>
+	<construct force_italic="0" force_plaintext="0">
+		<item_name>dunno</item_name>
+		<term>dunno.</term>
+	</construct>
+	<construct force_italic="0" force_plaintext="1"> 
+		<item_name>forceplain</item_name>
+		<term>plain.</term>
+	</construct>
+
+	<construct force_italic="1" force_plaintext="0"> 
+		<item_name>forceitalic</item_name>
+		<term>italic.</term>
+	</construct>
+</constructs>

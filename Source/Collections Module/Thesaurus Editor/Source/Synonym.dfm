@@ -1,0 +1,2 @@
+inherited fraSynonym: TfraSynonym
+end

@@ -1,0 +1,2 @@
+inherited fraProcess: TfraProcess
+end

@@ -1,0 +1,2 @@
+inherited fraCondition: TfraCondition
+end

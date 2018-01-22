@@ -1,0 +1,7 @@
+<TR>
+	<TD><#AcqDate></TD>
+	<TD><#AcquiredFrom></TD>
+	<TD><#Completed></TD>
+	<TD><#Method></TD>
+	<TD><#AmountPaid></TD>
+</TR>

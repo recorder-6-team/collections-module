@@ -1,0 +1,2 @@
+inherited fraInscription: TfraInscription
+end

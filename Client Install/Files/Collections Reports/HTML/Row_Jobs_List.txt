@@ -1,0 +1,8 @@
+<TR>
+	<TD><#JobNo></TD>
+	<TD><#Name></TD>
+	<TD><#Dates></TD>
+	<TD><#Duration></TD>
+	<TD><#MaterialCost></TD>
+	<TD><#Status></TD>
+</TR>

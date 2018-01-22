@@ -1,0 +1,5 @@
+<action caption="Return specimens to usual store">
+UPDATE Collection_Unit
+SET Current_Container_Collection_Unit_Key = Usual_Container_Collection_Unit_Key
+WHERE Collection_Unit_Key IN ('%s')
+</action>

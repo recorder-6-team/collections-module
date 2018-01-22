@@ -1,0 +1,62 @@
+#------------------------------------------------------------------------------
+VERSION = BWS.01
+#------------------------------------------------------------------------------
+!ifndef ROOT
+ROOT = $(MAKEDIR)\..
+!endif
+#------------------------------------------------------------------------------
+MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
+DCC = $(ROOT)\bin\dcc32.exe $**
+BRCC = $(ROOT)\bin\brcc32.exe $**
+#------------------------------------------------------------------------------
+PROJECTS = UnitLib7.bpl InHouse7.bpl InHouse7_Design.bpl InHouseAPI7.bpl \
+  InHouseDB7.bpl trecold7.bpl rapid.bpl Jncc7.bpl RecorderAddin7.bpl \
+  Luxembourg7_Runtime.bpl Luxembourg7_Design.bpl CollectionsBrowserControls.bpl \
+  SMImportD7.bpl FrameViewer7.bpl
+#------------------------------------------------------------------------------
+default: $(PROJECTS)
+#------------------------------------------------------------------------------
+
+CollectionsBrowserControls.bpl: ..\Collections Module\Packages\CollectionsBrowserControls.dpk
+  $(DCC)
+
+Jncc7.bpl: ..\Other Dependencies\Packages\Jncc7\Jncc7.dpk
+  $(DCC)
+
+RecorderAddin7.bpl: ..\Other Dependencies\Recorder Addins\Packages\RecorderAddin7.dpk
+  $(DCC)
+
+UnitLib7.bpl: ..\Other Dependencies\Packages\UnitLib7\UnitLib7.dpk
+  $(DCC)
+
+InHouse7.bpl: ..\Other Dependencies\Packages\InHouse7\InHouse7.dpk
+  $(DCC)
+
+InHouse7_Design.bpl: ..\Other Dependencies\Packages\InHouse7_Design\InHouse7_Design.dpk
+  $(DCC)
+
+InHouseAPI7.bpl: ..\Other Dependencies\Packages\InHouseAPI7\InHouseAPI7.dpk
+  $(DCC)
+
+InHouseDB7.bpl: ..\Other Dependencies\Packages\InHouseDB7\InHouseDB7.dpk
+  $(DCC)
+
+Luxembourg7_Design.bpl: ..\Collections Module\Packages\Luxembourg7_Design.dpk
+  $(DCC)
+
+Luxembourg7_Runtime.bpl: ..\Collections Module\Packages\Luxembourg7_Runtime.dpk
+  $(DCC)
+
+trecold7.bpl: ..\Other Dependencies\Third-Party\Rapid Tree\Delphi7\trecold7.dpk
+  $(DCC)
+
+rapid.bpl: ..\Other Dependencies\Third-Party\Rapid Tree\Delphi7\rapid.dpk
+  $(DCC)
+
+SMImportD7.bpl: ..\Other Dependencies\Third-Party\SMImport287\Sources\SMImportD7.dpk
+  $(DCC)
+
+FrameViewer7.bpl: ..\Other Dependencies\Third-Party\HTML Components\Package\FrameViewer7.dpk
+  $(DCC)
+
+

@@ -1,0 +1,2 @@
+inherited fraMeasurements: TfraMeasurements
+end

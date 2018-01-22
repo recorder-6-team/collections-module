@@ -1,0 +1,7 @@
+<TABLE WIDTH="100%" CELLSPACING="0">
+<TR>
+	<TH>Ref No</TH>
+	<TH>Name</TH>
+	<TH>Type</TH>
+	<TH>Store</TH>
+</TR>

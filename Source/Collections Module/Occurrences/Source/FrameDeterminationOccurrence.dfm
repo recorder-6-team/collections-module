@@ -1,0 +1,2 @@
+inherited fraDetermination: TfraDetermination
+end

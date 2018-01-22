@@ -1,0 +1,7 @@
+<TABLE WIDTH="100%" CELLSPACING="0">
+<TR>
+	<TD class="bold">Ref No.</TD>
+	<TD class="bold">Name</TD>
+	<TD class="bold">Type</TD>
+	<TD class="bold">Pre-Move Store</TD>
+</TR>

@@ -1,0 +1,2 @@
+inherited fraLocalDomain: TfraLocalDomain
+end

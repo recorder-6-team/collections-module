@@ -1,0 +1,27 @@
+<action caption="Delete Specimens">
+SET ARITHABORT ON
+SET NOCOUNT ON
+
+DECLARE @SpecimenKey	CHAR(16)
+
+/* Create tempory 'list' of specimens to iterate over. */
+DECLARE curSpecimens CURSOR FOR
+	SELECT	Collection_Unit_Key 
+	FROM 	Specimen_Unit 
+	WHERE 	Collection_Unit_Key IN ('%s')
+
+/* Delete each specimen from the 'list'. */
+OPEN curSpecimens
+
+FETCH NEXT FROM curspecimens INTO @SpecimenKey
+WHILE @@FETCH_STATUS = 0 BEGIN
+
+	EXECUTE usp_Specimen_Delete
+		@SpecimenKey
+		
+	FETCH NEXT FROM curspecimens INTO @SpecimenKey
+END
+
+CLOSE curSpecimens
+DEALLOCATE curSpecimens
+</action>

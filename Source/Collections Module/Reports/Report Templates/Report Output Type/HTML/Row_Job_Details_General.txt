@@ -1,0 +1,33 @@
+<TABLE WIDTH="100%" CELLSPACING="0">
+<COL WIDTH = "25%">
+<COL WIDTH = "*">
+<TR>
+	<TD class="bold">Job No:</TD>
+	<TD><#JobNo></TD>
+</TR>
+<TR>
+	<TD class="bold">Date:</TD>
+	<TD><#Date></TD>
+	</TR>
+<TR>
+	<TD class="bold">Name:</TD>
+	<TD><#Name></TD>
+</TR>
+<TR>
+	<TD class="bold">Details:</TD>
+	<TD><#Details></TD>
+</TR>
+<TR>
+	<TD class="bold">Staff Involved:</TD>
+	<TD><#StaffInvolved></TD>
+</TR>
+<TR>
+	<TD class="bold">Cost:</TD>
+	<TD><#Cost></TD>
+</TR>
+<TR>
+	<TD class="bold">Known Subject Areas:</TD>
+	<TD><#KnownSubjectAreas></TD>
+</TR>
+</TABLE>
+<BR>

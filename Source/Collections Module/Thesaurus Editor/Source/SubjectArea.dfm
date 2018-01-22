@@ -1,0 +1,2 @@
+inherited fraSubjectArea: TfraSubjectArea
+end

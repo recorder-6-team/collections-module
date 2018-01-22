@@ -1,0 +1,41 @@
+<TABLE WIDTH="100%" CELLSPACING="0">
+<COL WIDTH = "25%">
+<COL WIDTH = "*">
+<TR>
+	<TD class="bold">Check:</TD>
+	<TD><#Check></TD>
+</TR>
+<TR>
+	<TD class="bold">Type:</TD>
+	<TD><#Type></TD>
+	</TR>
+<TR>
+	<TD class="bold">Priority:</TD>
+	<TD><#Priority></TD>
+</TR>
+<TR>
+	<TD class="bold">Status:</TD>
+	<TD><#Status></TD>
+</TR>
+<TR>
+	<TD class="bold">Action:</TD>
+	<TD><#Action></TD>
+</TR>
+<TR>
+	<TD class="bold">Duration:</TD>
+	<TD><#Duration></TD>
+</TR>
+<TR>
+	<TD class="bold">Identified By:</TD>
+	<TD><#IdentifiedBy></TD>
+</TR>
+<TR>
+	<TD class="bold">Date Set:</TD>
+	<TD><#DateSet></TD>
+</TR>
+<TR>
+	<TD class="bold">Job Assigned To:</TD>
+	<TD><#JobAssignedTo></TD>
+</TR>
+</TABLE>
+<BR>

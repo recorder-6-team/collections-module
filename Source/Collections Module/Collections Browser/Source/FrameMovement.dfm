@@ -1,0 +1,2 @@
+inherited fraMovement: TfraMovement
+end

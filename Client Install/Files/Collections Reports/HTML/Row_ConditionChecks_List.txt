@@ -1,0 +1,8 @@
+<TR>
+	<TD><#RefNo></TD>
+	<TD><#Type></TD>
+	<TD><#Details></TD>
+	<TD><#Condition></TD>
+	<TD><#CheckedBy></TD>
+	<TD><#Date></TD>
+</TR>

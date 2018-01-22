@@ -1,0 +1,25 @@
+<TABLE WIDTH="100%" CELLSPACING="0">
+<COL WIDTH = "25%">
+<COL WIDTH = "*">
+<TR>
+	<TD class="bold">Number:</TD>
+	<TD><#Number></TD>
+</TR>
+<TR>
+	<TD class="bold">Name:</TD>
+	<TD><#Name></TD>
+	</TR>
+<TR>
+	<TD class="bold">Specimen?</TD>
+	<TD><#Specimen></TD>
+</TR>
+<TR>
+	<TD class="bold">Store Code:</TD>
+	<TD><#StoreCode></TD>
+</TR>
+<TR>
+	<TD class="bold">Comments:</TD>
+	<TD><#Comments></TD>
+</TR>
+</TABLE>
+<BR>

@@ -1,0 +1,11 @@
+<TABLE WIDTH="100%" CELLSPACING="0">
+<COL WIDTH = "20%">
+<COL WIDTH = "40%">
+<COL WIDTH = "20%">
+<COL WIDTH = "*">
+<TR>
+	<TD class="bold">Ref No.</TD>
+	<TD class="bold">Name</TD>
+	<TD class="bold">Type</TD>
+	<TD class="bold">Store</TD>
+</TR>

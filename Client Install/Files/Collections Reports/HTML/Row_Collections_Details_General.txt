@@ -1,0 +1,47 @@
+<TABLE WIDTH="100%" CELLSPACING="0">
+<TR>
+	<TD class="bold">Name (Acc No.):</TD>
+	<TD><#Name> <#AccNo></TD>
+</TR>
+<TR>
+	<TD class="bold">Material Summary:</TD>
+	<TD><#MaterialSummary></TD>
+</TR>
+<TR>
+	<TD class="bold">Topic:</TD>
+	<TD><#Topic></TD>
+</TR>
+<TR>
+	<TD class="bold">Known Subject Areas:</TD>
+	<TD><#Domains></TD>
+</TR>
+<TR>
+	<TD class="bold">Geographic Info:</TD>
+	<TD><#GeoInfo></TD>
+</TR>
+<TR>
+	<TD class="bold">Description:</TD>
+	<TD><#Description></TD>
+</TR>
+<TR>
+	<TD class="bold">Time Periods:</TD>
+	<TD><#TimePeriod></TD>
+</TR>
+<TR>
+	<TD class="bold">Assembled By:</TD>
+	<TD><#AssembledBy></TD>
+</TR>
+<TR>
+	<TD class="bold">Owner:</TD>
+	<TD><#Owner></TD>
+</TR>
+<TR>
+	<TD class="bold">Current Holder & Code:</TD>
+	<TD><#Holder></TD>
+</TR>
+<TR>
+	<TD class="bold">Status:</TD>
+	<TD><#Status></TD>
+</TR>
+</TABLE>
+<BR>

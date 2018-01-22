@@ -1,0 +1,10 @@
+<TABLE WIDTH="100%" CELLSPACING="0" BORDER="0" CELLSPACING="5" style="border:0px;">
+<tr>
+	<td colspan="3" style="border:0px;">I received the above items in good condition and agree to return them by the expected return date.  I agree to abide by all terms and conditions of this loan.</td>
+</tr>
+<TR>
+	<TD class="bold" style="border:0px;"><br>Signed:___________________</TD>
+	<TD class="bold" style="border:0px;"><br>Name:______________________</TD>
+	<TD class="bold" style="border:0px;"><br>Date:________</TD>
+</TR>
+</table>

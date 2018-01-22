@@ -1,0 +1,6 @@
+<TR>
+	<TD><#Number></TD>
+	<TD><#Item_Name></TD>
+	<TD><#Type></TD>
+	<TD><#Code></TD>
+</TR>

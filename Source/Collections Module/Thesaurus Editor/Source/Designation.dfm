@@ -1,0 +1,2 @@
+inherited fraDesignation: TfraDesignation
+end

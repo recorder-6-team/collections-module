@@ -1,0 +1,76 @@
+package Jncc7;
+
+{$R *.res}
+{$R 'JnccReg7.dcr'}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST ON}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'JNCC Related Components (Delphi 7)'}
+{$IMPLICITBUILD ON}
+{$DEFINE USE_ADO}
+{$DEFINE D5}
+
+requires
+  rtl,
+  UnitLib7,
+  InHouse7,
+  vcl,
+  dbrtl,
+  vcldb,
+  dsnap,
+  adortl,
+  trecold7,
+  rapid,
+  InHouseDB7;
+
+contains
+  ADODB_TLB in '..\..\DssVcl32\ADODB_TLB.pas',
+  DisplayFuncs in '..\..\DssVcl32\DisplayFuncs.pas',
+  DragDrop in '..\..\DssVcl32\DragDrop.pas',
+  EasyShell in '..\..\DssVcl32\EasyShell.pas',
+  ExceptionForm in '..\..\DssVcl32\ExceptionForm.pas' {frmException: TfrmException},
+  IDComboBox in '..\..\DssVcl32\IDComboBox.pas',
+  CompositeComponent in '..\..\JNCC\Components\CompositeComponent.pas',
+  DataClasses in '..\..\JNCC\Components\DataClasses.pas',
+  DBListCombo in '..\..\JNCC\Components\DBListCombo.pas',
+  DropSource in '..\..\JNCC\Components\DropSource.pas',
+  DropStruct in '..\..\JNCC\Components\DropStruct.pas',
+  DropTarget in '..\..\JNCC\Components\DropTarget.pas',
+  GenFuncs in '..\..\JNCC\Components\GenFuncs.pas',
+  JNCCDatasets in '..\..\JNCC\Components\JNCCDatasets.pas',
+  JNCCGrid in '..\..\JNCC\Components\JNCCGrid.pas',
+  SpatialRefFuncs in '..\..\JNCC\Components\SpatialRefFuncs.pas',
+  SQLConverter in '..\..\JNCC\Components\SQLConverter.pas',
+  VagueDate in '..\..\JNCC\Components\VagueDate.pas',
+  VagueDateEdit in '..\..\JNCC\Components\VagueDateEdit.pas',
+  Constants in '..\..\JNCC\Constants.pas',
+  DBFilterGrid in '..\..\JNCC\DBFilterGrid.pas',
+  Finder in '..\..\JNCC\Finder.pas',
+  ImportWizardDBGrid in '..\..\JNCC\ImportWizardDBGrid.pas',
+  Measurements in '..\..\JNCC\Measurements.pas',
+  MeasurementsData in '..\..\JNCC\MeasurementsData.pas' {dmMeasurements: TdmMeasurements},
+  Recorder2000_TLB in '..\..\JNCC\Recorder2000_TLB.pas',
+  Sources in '..\..\JNCC\Sources.pas',
+  SourcesData in '..\..\JNCC\SourcesData.pas' {dmSources: TdmSources},
+  SpatialRef in '..\..\JNCC\SpatialRef.pas',
+  JnccReg7 in 'JnccReg7.pas';
+
+end.

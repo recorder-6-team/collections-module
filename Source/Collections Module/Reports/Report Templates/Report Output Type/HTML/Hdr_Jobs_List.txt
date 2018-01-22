@@ -1,0 +1,9 @@
+<TABLE WIDTH="100%" CELLSPACING="0">
+<TR>
+	<TH>Job No</TH>
+	<TH>Name</TH>
+	<TH>Dates</TH>
+	<TH>Duration</TH>
+	<TH>Material Cost</TH>
+	<TH>Status</TH>
+</TR>

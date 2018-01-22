@@ -1,0 +1,2 @@
+inherited fraJob: TfraJob
+end

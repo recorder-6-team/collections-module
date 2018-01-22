@@ -1,0 +1,52 @@
+<TABLE WIDTH="100%" CELLSPACING="0">
+<COL WIDTH = "25%">
+<COL WIDTH = "25%">
+<COL WIDTH = "20%">
+<COL WIDTH = "*">
+<TR>
+	<TD class="bold">Determination:</TD>
+	<TD><#Determination></TD>
+	<TD COLSPAN = "2"><#NomenclatureStatus></TD>
+</TR>
+<TR>
+	<TD class="bold">Preferred No:</TD>
+	<TD><#PrefNumber></TD>
+	<TD class="bold">Status:</TD>
+	<TD><#Status></TD>
+</TR>
+<TR>
+	<TD class="bold">Accession Number:</TD>
+	<TD><#AccNumber></TD>
+	<TD class="bold">Owner:</TD>
+	<TD><#Owner></TD>
+</TR>
+<TR>
+	<TD class="bold">Type:</TD>
+	<TD COLSPAN = "3"><#Type></TD>
+</TR>
+<TR>
+	<TD class="bold">Geographic Info:</TD>
+	<TD COLSPAN = "3"><#GeographicInfo></TD>
+</TR>
+<TR>
+	<TD class="bold">Collection:</TD>
+	<TD COLSPAN = "3"><#CollectionName></TD>
+</TR>
+<TR>
+	<TD class="bold">Department:</TD>
+	<TD COLSPAN = "3"><#Department></TD>
+</TR>
+<TR>
+	<TD class="bold">Store:</TD>
+	<TD COLSPAN = "3"><#StoreName></TD>
+</TR>
+<TR>
+	<TD class="bold">Survey Organiser:</TD>
+	<TD COLSPAN = "3"><#SurveyOrganiser></TD>
+</TR>
+<TR>
+	<TD class="bold">Store Code:</TD>
+	<TD COLSPAN = "3"><#StoreCode></TD>
+</TR>
+</TABLE>
+<BR>

@@ -1,0 +1,27 @@
+<TABLE WIDTH="100%" CELLSPACING="0">
+<TR>
+	<TD class="bold">Ref No:</TD>
+	<TD><#Number></TD>
+</TR>
+<TR>
+	<TD class="bold"><#Other_Party_Caption>:</TD>
+	<TD><#Other_Party></TD>
+</TR>
+<TR>
+	<TD class="bold">Agreement Date:</TD>
+	<TD><#Completion_Date></TD>
+</TR>
+<TR>
+	<TD class="bold">Staff Responsible:</TD>
+	<TD><#Staff_Responsible></TD>
+</TR>
+<TR>
+	<TD class="bold">Department:</TD>
+	<TD><#Department></TD>
+</TR>
+<TR>
+	<TD class="bold">Status:</TD>
+	<TD><#Status></TD>
+</TR>
+</TABLE>
+<BR>

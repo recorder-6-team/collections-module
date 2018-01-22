@@ -1,0 +1,10 @@
+<TR>
+	<TD><#AccNo></TD>
+	<TD><#PrefDetermination></TD>
+	<TD><#Type></TD>
+	<TD><#Collector></TD>
+	<TD><#GatheringSite></TD>
+	<TD><#GatheringDate></TD>
+	<TD><#CurrentLoc></TD>
+	<TD><#LocCode></TD>
+</TR>

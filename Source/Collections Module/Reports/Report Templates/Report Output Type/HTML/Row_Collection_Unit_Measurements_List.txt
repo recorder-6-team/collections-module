@@ -1,0 +1,7 @@
+<TR>
+	<TD><#Applies_To></TD>
+	<TD><#Parameter_Term></TD>
+	<TD><#Value></TD>
+	<TD><#Method_Term></TD>
+	<TD><#Accuracy></TD>
+</TR>

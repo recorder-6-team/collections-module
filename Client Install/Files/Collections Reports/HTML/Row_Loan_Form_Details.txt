@@ -1,0 +1,31 @@
+<TABLE WIDTH="100%" CELLSPACING="0">
+<TR>
+	<TD class="bold">Reference No:</TD>
+	<TD><#Number></TD>
+</TR>
+<TR>
+	<TD class="bold">Loaned <#ToOrBy>:</TD>
+	<TD><#LoanedTo></TD>
+</TR>
+<TR>
+	<TD class="bold">Start Date:</TD>
+	<TD><#StartDate></TD>
+</TR>
+<TR>
+	<TD class="bold">Exp. Return Date:</TD>
+	<TD><#ExpReturnDate></TD>
+</TR>
+<TR>
+	<TD class="bold">Staff Responsible:</TD>
+	<TD><#StaffResponsible></TD>
+</TR>
+<TR>
+	<TD class="bold">Department:</TD>
+	<TD><#Department></TD>
+</TR>
+<TR>
+	<TD class="bold">Loan Period:</TD>
+	<TD><#LoanPeriod></TD>
+</TR>
+</TABLE>
+<BR>

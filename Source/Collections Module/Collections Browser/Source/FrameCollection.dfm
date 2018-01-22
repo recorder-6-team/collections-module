@@ -1,0 +1,2 @@
+inherited fraCollection: TfraCollection
+end

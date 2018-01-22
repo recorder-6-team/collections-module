@@ -1,0 +1,5 @@
+<action caption="Move specimens permanently to current store">
+UPDATE Collection_Unit
+SET Usual_Container_Collection_Unit_Key = Current_Container_Collection_Unit_Key
+WHERE Collection_Unit_Key IN ('%s')
+</action>

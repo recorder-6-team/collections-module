@@ -1,0 +1,2 @@
+inherited fraFieldData: TfraFieldData
+end

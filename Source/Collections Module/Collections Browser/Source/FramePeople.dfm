@@ -1,0 +1,2 @@
+inherited fraPeople: TfraPeople
+end

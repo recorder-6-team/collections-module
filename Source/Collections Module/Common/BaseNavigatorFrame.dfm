@@ -1,0 +1,52 @@
+inherited fraBaseNavigator: TfraBaseNavigator
+  object pnlTree: TPanel
+    Left = 0
+    Top = 0
+    Width = 371
+    Height = 303
+    Align = alClient
+    BevelOuter = bvNone
+    BorderWidth = 4
+    TabOrder = 0
+    object tvHierarchy: TRapidTree
+      Left = 4
+      Top = 4
+      Width = 363
+      Height = 295
+      SmoothExpandCollapse = False
+      FitColumnToClientWidth = True
+      FitToHeight = False
+      DoubleBuffered = False
+      Align = alClient
+      TransparentMode = False
+      DefaultRowHeight = 18
+      RowCount = 0
+      FixedRows = 0
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Arial'
+      Font.Style = []
+      GridLineWidth = 0
+      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine]
+      ParentFont = False
+      TabOrder = 0
+      HideSelection = False
+      Showlines = True
+      ShowRoot = True
+      ShowButtons = True
+      ShowImages = True
+      ShowLogic = False
+      SortType = stNone
+      WordWrap = False
+      AutoMove = False
+      ToolTips = False
+      AutoExpand = False
+      TooltipColor = clInfoBk
+      ToolTipPause = 1000
+      StatesDrawed = True
+      HTMLDrawing = True
+      Data = {0400000000000000}
+    end
+  end
+end

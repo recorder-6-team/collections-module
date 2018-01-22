@@ -1,0 +1,2 @@
+inherited fraMeasurementsLoc: TfraMeasurementsLoc
+end

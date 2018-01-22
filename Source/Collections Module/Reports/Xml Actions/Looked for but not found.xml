@@ -1,0 +1,59 @@
+<action caption="Looked for but not found">
+DECLARE	@ConditionCheckKey	CHAR(16),
+		@SessionId			CHAR(16),
+		@UserId				CHAR(16),
+		@SpecimenKey		CHAR(16),
+		@Discarded			CHAR(16),
+		@Date				INT,
+		@Ref				VARCHAR(20)
+
+/* Obtain session and user id. Assumes correct record returned. */
+SELECT	@SessionId 	= Session_ID, 
+		@userId 	= User_Name_Key,
+		@Date		= dbo.ufn_GetVagueDateIntegerFromDate(GetDate())
+FROM	Session
+WHERE	GetDate() >= Date_Time_Start
+AND		Date_Time_End IS NULL
+ORDER BY Date_Time_Start DESC
+
+/* Generate a reference */
+SELECT	@Ref = Convert(CHAR(10), GetDate(), 120) + '/NF/' + CAST(Count(*) + 1 AS VARCHAR)
+FROM	Conservation_Check
+WHERE	SubString(Ref_Number, 1, 14) = Convert(CHAR(10), GetDate(), 120) + '/NF/'
+
+EXECUTE usp_ConditionCheck_Insert 
+	@ConditionCheckKey OUTPUT,
+	'SYSTEM000000220H',
+	@Ref,
+	@Date,
+	@Date,
+	'D',
+	@UserId,
+	'SYSTEM000000220J',
+	1,
+	NULL,
+	@SessionId
+
+/* Need to create a new record for each specimen. */
+DECLARE curSpecimens CURSOR FOR
+	SELECT	Collection_Unit_Key 
+	FROM 	Collection_Unit 
+	WHERE 	Collection_Unit_Key IN ('%s')
+
+OPEN curSpecimens
+
+FETCH NEXT FROM curspecimens INTO @SpecimenKey
+WHILE @@FETCH_STATUS = 0 BEGIN
+
+	EXECUTE usp_ConditionCheck_Update_ForCollectionUnit
+		@SpecimenKey,
+		@ConditionCheckKey,
+		@SessionId,
+		@Discarded
+		
+	FETCH NEXT FROM curspecimens INTO @SpecimenKey
+END
+
+CLOSE curSpecimens
+DEALLOCATE curSpecimens
+</action>

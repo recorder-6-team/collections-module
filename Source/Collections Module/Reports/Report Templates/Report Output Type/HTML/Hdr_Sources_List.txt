@@ -1,0 +1,9 @@
+<TABLE WIDTH="100%" CELLSPACING="0">
+<COL WIDTH = "80%">
+<COL WIDTH = "10%">
+<COL WIDTH = "*">
+<TR>
+	<TD class="bold">Document</TD>
+	<TD class="bold">Original</TD>
+	<TD class="bold">Type</TD>
+</TR>

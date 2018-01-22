@@ -1,0 +1,1 @@
+DROP PROC usp_conceptrelation_insert_forcopy

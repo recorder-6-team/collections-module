@@ -1,0 +1,40 @@
+BODY { font-family: arial, sans-serif }
+H1 {  
+	text-align: center; 
+	font-family: arial, Sans-Serif; 
+	font-style: bold; 
+	font-size: 30pt 
+}
+H2 {  
+	text-align: center; 
+	font-family: arial, Sans-Serif; 
+	font-size: 16pt 
+}
+H3 {  
+	text-align: center; 
+	font-family: arial, Sans-Serif; 
+	font-size: 14pt 
+}
+H4 {  
+	text-align: left; 
+	font-family: arial, Sans-Serif; 
+	font-size: 16pt 
+}
+H5 {  
+	text-align: left; 
+	font-family: arial, Sans-Serif; 
+	font-size: 12pt;
+}
+TH{
+	text-align: left; 
+	font-family: arial, Sans-Serif; 
+}
+TABLE, TD, TH { 
+ 	border: solid black 1px;
+ 	font-family: arial, Sans-Serif; 
+	font-size: 10pt 	
+}
+TD.bold{
+	FONT-WEIGHT:BOLD;
+	font-family: arial, Sans-Serif; 
+}

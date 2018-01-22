@@ -1,0 +1,2 @@
+inherited fraSpecimen: TfraSpecimen
+end

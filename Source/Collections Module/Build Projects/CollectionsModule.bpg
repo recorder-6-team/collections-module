@@ -1,0 +1,53 @@
+#------------------------------------------------------------------------------
+VERSION = BWS.01
+#------------------------------------------------------------------------------
+!ifndef ROOT
+ROOT = $(MAKEDIR)\..
+!endif
+#------------------------------------------------------------------------------
+MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
+DCC = $(ROOT)\bin\dcc32.exe $**
+BRCC = $(ROOT)\bin\brcc32.exe $**
+#------------------------------------------------------------------------------
+PROJECTS = CollectionsBrowser.ocx CollectionsModuleManager.ocx GeoAreasTab.ocx \
+  Occurrences.ocx QuickEntry.ocx StandardReports.dll SpecimenFinderModule.ocx \
+  ThesaurusBrowser.ocx ThesaurusEditor.exe UserConfigExtended.ocx \
+  LoadThesaurusEditor.exe
+#------------------------------------------------------------------------------
+default: $(PROJECTS)
+#------------------------------------------------------------------------------
+
+CollectionsBrowser.ocx: CollectionsBrowser.dpr
+  $(DCC)
+
+ThesaurusEditor.exe: ThesaurusEditor.dpr
+  $(DCC)
+
+SpecimenFinderModule.ocx: SpecimenFinderModule.dpr
+  $(DCC)
+
+StandardReports.dll: StandardReports.dpr
+  $(DCC)
+
+QuickEntry.ocx: QuickEntry.dpr
+  $(DCC)
+
+Occurrences.ocx: Occurrences.dpr
+  $(DCC)
+
+CollectionsModuleManager.ocx: CollectionsModuleManager.dpr
+  $(DCC)
+
+ThesaurusBrowser.ocx: ThesaurusBrowser.dpr
+  $(DCC)
+
+UserConfigExtended.ocx: UserConfigExtended.dpr
+  $(DCC)
+
+GeoAreasTab.ocx: GeoAreasTab.dpr
+  $(DCC)
+
+LoadThesaurusEditor.exe: LoadThesaurusEditor.dpr
+  $(DCC)
+
+

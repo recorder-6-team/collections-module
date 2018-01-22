@@ -1,0 +1,2 @@
+inherited fraThesaurusBrowserDetails: TfraThesaurusBrowserDetails
+end

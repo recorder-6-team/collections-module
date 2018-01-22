@@ -1,0 +1,9 @@
+<TABLE WIDTH="100%" CELLSPACING="0">
+<TR>
+	<TH>Ref No</TH>
+	<TH>Type</TH>
+	<TH>Details</TH>
+	<TH>Condition</TH>
+	<TH>Checked By</TH>
+	<TH>Date</TH>
+</TR>

@@ -1,0 +1,2 @@
+inherited fraTask: TfraTask
+end

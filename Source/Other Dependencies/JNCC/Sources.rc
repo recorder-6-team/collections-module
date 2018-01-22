@@ -1,0 +1,3 @@
+BMP_ADD BITMAP Add.bmp
+BMP_DEL BITMAP DeleteRed.bmp
+BMP_FIND BITMAP Find.bmp

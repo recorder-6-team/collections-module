@@ -1,0 +1,6 @@
+<TR>
+	<TD><#RefNo></TD>
+	<TD><#Name></TD>
+	<TD><#Type></TD>
+	<TD><#Store></TD>
+</TR>

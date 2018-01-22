@@ -1,0 +1,7 @@
+<TR>
+	<TD><#Determination></TD>
+	<TD><#Determiner></TD>
+	<TD><#DetDate></TD>
+	<TD><#Type></TD>
+	<TD><#Confidence></TD>
+</TR>

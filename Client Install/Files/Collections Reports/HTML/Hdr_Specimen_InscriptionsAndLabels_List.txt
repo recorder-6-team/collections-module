@@ -1,0 +1,9 @@
+<TABLE WIDTH="100%" CELLSPACING="0">
+<COL WIDTH = "15%">
+<COL WIDTH = "50%">
+<COL WIDTH = "*">
+<TR>
+	<TD class="bold">Type</TD>
+	<TD class="bold">Inscription</TD>
+	<TD class="bold">Author</TD>
+</TR>

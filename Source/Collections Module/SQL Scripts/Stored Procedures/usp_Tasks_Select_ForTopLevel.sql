@@ -1,0 +1,89 @@
+If EXISTS (SELECT * FROM SysObjects WHERE Id = OBJECT_ID(N'[dbo].[usp_Tasks_Select_ForTopLevel]') AND OBJECTPROPERTY(Id, N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[usp_Tasks_Select_ForTopLevel]
+GO
+
+CREATE PROCEDURE [dbo].[usp_Tasks_Select_ForTopLevel] 
+@UserDomainMask INT,
+@SessionID CHAR(16),
+@SortOrderIndex TINYINT,
+@Key CHAR(16) = NULL
+
+AS
+--  DESCRIPTION
+--  Returns Tasks to the top level of the CollectionsBrowser
+--
+--  PARAMETERS
+--	NAME				DESCRIPTION
+--	@Key 				Optional Key. When specified, only the single top level record is returned with that key
+--	@UserDomainMask		User's Domain Mask restricting which records may be returned
+--	@SessionID 			User's SessionID
+--	@SortOrderIndex		Index determining Sort Order
+--
+--
+--  AUTHOR:     		Ben Collier, Dorset Software
+--  CREATED:    		2003-08-19
+--
+SET NOCOUNT ON
+
+-- Create  a table to hold the items we are looking for
+DECLARE @Search TABLE (ItemKey CHAR(16) COLLATE SQL_Latin1_General_CP1_CI_AS PRIMARY KEY)
+
+IF @Key IS NOT NULL
+		INSERT INTO @Search VALUES (@Key)
+ELSE IF object_id('tempdb..#TempFilter') is not null
+	INSERT INTO @Search SELECT DISTINCT ItemKey FROM #TempFilter
+ELSE
+	INSERT INTO @Search SELECT Conservation_Task_Key FROM Conservation_Task
+
+IF @SortOrderIndex = 0	
+BEGIN
+		SELECT CT.Conservation_Task_Key AS Item_Key, CT.Display_Caption
+		FROM 
+		CONSERVATION_TASK CT
+			INNER JOIN
+				CONSERVATION_CHECK CC
+			ON CT.Conservation_Check_Key = CC.Conservation_Check_Key 
+				AND ((CC.Domain_Mask & @UserDomainMask > 0) OR (CC.Entered_Session_ID = @SessionID) 
+					OR (CC.Changed_Session_ID = @SessionID) OR (CC.Domain_Mask = 0))
+		INNER JOIN @Search S ON S.ItemKey=CT.Conservation_Task_Key
+		ORDER BY CT.Set_Vague_Date_Start DESC, CT.Set_Vague_Date_End DESC, CT.Set_Vague_Date_Type, 
+			dbo.ufn_GetConservationStatus(Status)
+END
+ELSE IF @SortOrderIndex = 1
+BEGIN
+		SELECT CT.Conservation_Task_Key AS Item_Key, CT.Display_Caption
+		FROM 
+		CONSERVATION_TASK CT
+			INNER JOIN
+				CONSERVATION_CHECK CC
+			ON CT.Conservation_Check_Key = CC.Conservation_Check_Key 
+				AND ((CC.Domain_Mask & @UserDomainMask > 0) OR (CC.Entered_Session_ID = @SessionID) 
+					OR (CC.Changed_Session_ID = @SessionID) OR (CC.Domain_Mask = 0))
+		INNER JOIN @Search S ON S.ItemKey=CT.Conservation_Task_Key
+		ORDER BY dbo.ufn_GetConservationStatus(Status),
+			CT.Set_Vague_Date_Start DESC, CT.Set_Vague_Date_End DESC, CT.Set_Vague_Date_Type
+END
+
+GO
+
+/*===========================================================================*\
+  Grant permissions.
+\*===========================================================================*/
+IF EXISTS (SELECT * FROM SysObjects WHERE Id = OBJECT_ID('dbo.usp_Tasks_Select_ForTopLevel') AND SysStat & 0xf = 4)
+BEGIN
+    	PRINT 'Setting up security on procedure usp_Tasks_Select_ForTopLevel'
+	IF EXISTS (SELECT * FROM SYSUSERS WHERE NAME = 'R2k_AddOnly')
+        	GRANT EXECUTE ON dbo.usp_Tasks_Select_ForTopLevel TO [R2k_AddOnly]
+	IF EXISTS (SELECT * FROM SYSUSERS WHERE NAME = 'R2k_Administrator')
+		GRANT EXECUTE ON dbo.usp_Tasks_Select_ForTopLevel TO [R2k_Administrator]
+	IF EXISTS (SELECT * FROM SYSUSERS WHERE NAME = 'R2k_FullEdit')
+		GRANT EXECUTE ON dbo.usp_Tasks_Select_ForTopLevel TO [R2k_FullEdit]
+	IF EXISTS (SELECT * FROM SYSUSERS WHERE NAME = 'R2k_ReadOnly')
+		GRANT EXECUTE ON dbo.usp_Tasks_Select_ForTopLevel TO [R2k_ReadOnly]
+	IF EXISTS (SELECT * FROM SYSUSERS WHERE NAME = 'R2k_RecordCardsOnly')
+		GRANT EXECUTE ON dbo.usp_Tasks_Select_ForTopLevel TO [R2k_RecordCardsOnly]
+	IF EXISTS (SELECT * FROM SYSUSERS WHERE NAME = 'Dev - JNCC SQL')
+        	GRANT EXECUTE ON dbo.usp_Tasks_Select_ForTopLevel TO [Dev - JNCC SQL]
+END
+
+GO

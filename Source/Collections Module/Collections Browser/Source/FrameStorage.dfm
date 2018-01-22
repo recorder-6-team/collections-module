@@ -1,0 +1,2 @@
+inherited fraStorage: TfraStorage
+end

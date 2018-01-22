@@ -1,0 +1,7 @@
+<TABLE WIDTH="100%" CELLSPACING="0">
+<COL WIDTH = "50%">
+<COL WIDTH = "*">
+<TR>
+	<TH>Item</TH>
+	<TH>Value</TH>
+</TR>

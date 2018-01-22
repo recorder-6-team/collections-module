@@ -1,0 +1,43 @@
+package InHouse7_Design;
+
+{$R *.res}
+{$R '..\..\DssVcl32\InHouseReg7.dcr'}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'In House Components - Design-time (Delphi 7)'}
+{$DESIGNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  vcl,
+  UnitLib7,
+  vclx,
+  designide,
+  vclactnband,
+  InHouse7;
+
+contains
+  InHouseReg7 in '..\..\DssVcl32\InHouseReg7.pas',
+  ImageIndexPropEd in '..\..\DssVcl32\ImageIndexPropEd.pas';
+
+end.

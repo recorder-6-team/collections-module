@@ -1,0 +1,5 @@
+<div style="float: right; text-align: left; margin-top: 30px; margin-right: 50px;">
+	<b>Signed:&nbsp;__________________________________________________</b><br/><br/>
+	<b>Name:&nbsp;&nbsp;&nbsp;__________________________________________________</b><br/><br/>
+	<b>Date:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__________________________________________________</b><br/><br/>
+</div>

@@ -1,0 +1,2 @@
+inherited fraFact: TfraFact
+end

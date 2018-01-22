@@ -1,0 +1,1 @@
+Accession*@*@A:<#Year>/<#ID>*@*@1*@*@<#Year>*@*@0*@*@1!@!@Loan*@*@L:<#Year>/<#ID>*@*@1*@*@<#Year>*@*@0*@*@1!@!@Movement*@*@M:<#Year>/<#ID>*@*@1*@*@<#Year>*@*@0*@*@1!@!@Registration*@*@R:<#Year>/<#ID>*@*@1*@*@<#Year>*@*@0*@*@1!@!@

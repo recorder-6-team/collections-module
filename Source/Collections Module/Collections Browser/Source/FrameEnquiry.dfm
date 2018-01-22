@@ -1,0 +1,2 @@
+inherited fraEnquiry: TfraEnquiry
+end

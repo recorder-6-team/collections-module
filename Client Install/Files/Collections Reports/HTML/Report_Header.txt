@@ -1,0 +1,24 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+
+<HEAD>
+<TITLE>Collections Module Report</TITLE>
+<LINK REL=StyleSheet HREF="file://localhost/<#StandardReportTemplatePath>style.css" TYPE="text/css" MEDIA=screen>
+</HEAD>
+
+<BODY>
+<DIV ALIGN="center">
+<TABLE STYLE="border: 0px" CEL:LSPACING="0">
+<TR STYLE="border: 0px">
+<TD STYLE="border: 0px">
+<IMG SRC="file://localhost/<#StandardReportTemplatePath>Report logo.gif" ALT="Report Logo">
+</TD>
+<TD ALIGN="center" VALIGN="middle" STYLE="border: 0px">
+Grand-Duché de Luxembourg<BR>
+<B>Musée national d'histoire naturelle</B><BR>
+<FONT SIZE=2>Tél.: (+352) 46 22 40 201 - Fax : (+352) 46 38 48</FONT><BR>
+<H1><#ReportTitle></H1>
+</TD>
+</TR>
+</TABLE>
+</DIV>

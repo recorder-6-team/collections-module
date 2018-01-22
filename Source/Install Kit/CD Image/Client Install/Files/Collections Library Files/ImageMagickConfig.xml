@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ImageMagick>
+	<SupportedFileTypes>
+		<Extension>DNG</Extension>
+		<Extension>JPG</Extension>
+		<Extension>TIF</Extension>
+		<Extension>TIFF</Extension>
+	</SupportedFileTypes>
+	<ImageSet>
+		<Identifier>thumbnail</Identifier>
+		<Extension>jpg</Extension>
+		<DimensionX>342</DimensionX>
+		<DimensionY>170</DimensionY>
+	</ImageSet>
+	<ImageSet>
+		<Identifier>webimage</Identifier>
+		<Extension>bmp</Extension>
+		<DimensionX>400</DimensionX>
+		<DimensionY>600</DimensionY>
+	</ImageSet>
+</ImageMagick>

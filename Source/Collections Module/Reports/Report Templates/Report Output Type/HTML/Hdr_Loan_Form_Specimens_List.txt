@@ -1,0 +1,9 @@
+<TABLE WIDTH="100%" CELLSPACING="0">
+<TR>
+	<TH>Pref No</TH>
+	<TH>Determination</TH>
+	<TH>Type</TH>
+	<TH>Field Collector</TH>
+	<TH>Gathering Site</TH>
+	<TH>Gathering Date</TH>
+</TR>

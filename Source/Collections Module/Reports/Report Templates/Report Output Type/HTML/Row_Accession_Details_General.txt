@@ -1,0 +1,45 @@
+<TABLE WIDTH="100%" CELLSPACING="0">
+<COL WIDTH = "25%">
+<COL WIDTH = "*">
+<TR>
+	<TD class="bold">Accession No:</TD>
+	<TD><#Number></TD>
+</TR>
+<TR>
+	<TD class="bold">Exp. Completion Date:</TD>
+	<TD><#CompletionDate></TD>
+</TR>
+<TR>
+	<TD class="bold">Status:</TD>
+	<TD><#Status></TD>
+</TR>
+<TR>
+	<TD class="bold">Accession Date:</TD>
+	<TD><#AccessionDate></TD>
+</TR>
+<TR>
+	<TD class="bold"><#OtherPartyCaption>:</TD>
+	<TD><#OtherParty></TD>
+</TR>
+<TR>
+	<TD class="bold">Staff Responsible:</TD>
+	<TD><#StaffResponsible></TD>
+</TR>
+<TR>
+	<TD class="bold">Department:</TD>
+	<TD><#Department></TD>
+</TR>
+<TR>
+	<TD class="bold">Notes:</TD>
+	<TD><#Notes></TD>
+</TR>
+<TR>
+	<TD class="bold">Material Summary:</TD>
+	<TD><#Summary></TD>
+</TR>
+<TR>
+	<TD class="bold">Accession Notes:</TD>
+	<TD><#NotesDetails></TD>
+</TR>
+</TABLE>
+<BR>
